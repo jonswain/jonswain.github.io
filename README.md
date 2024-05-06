@@ -1,2 +1,3 @@
 # jonswain.github.io
-Personal blog
+
+A personal blog on data science and cheminformatics.
