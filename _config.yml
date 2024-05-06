@@ -19,5 +19,7 @@ plugins:
   - jekyll-feed
   - jemoji
 
+google_analytics: G-R6CVGR431E
+
 header_pages:
   - 
