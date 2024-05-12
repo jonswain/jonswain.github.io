@@ -54,6 +54,8 @@ The next course I completed was [100 Days of Code: The Complete Python Pro Bootc
 
 ## :bar_chart: Data science experience
 
+![I can't get a job because I don't have experience because I can't get a job](/images/cant_get_job.png){:class="img-responsive"}
+
 At this stage I started thinking about jobs, but everyone I spoke to gave the same response: "What you're doing is the right idea, but we're just looking for someone with more experience." This seems to be a classic problem when re-training, how do you get your first experience when everyone wants someone with experience? There are a few ways to go about this, but the main two seem to be either an internship or a bootcamp. Both have pros and cons, and I decided to go down the bootcamp route. To me the main advantages were the ease of organisation (I was relocating to the UK at the time and having something waiting for me was nice), and the shorter duration (most internships seemed to be multiple months, whereas the bootcamp I did was 5 weeks).
 
 ### S2DS
@@ -88,15 +90,15 @@ CS50 SQL is a 7-week SQL course with the same structure that teaches you all the
 
 ## :pill: Cheminformatics
 
-With a background in chemistry research, cheminformatics seemed like a natural field for me. Giving me the opportunity to combine by experience in chemistry and drug discovery with my new skills in Python programming and data science.
+With a background in chemistry research, cheminformatics seemed like a natural field for me. Giving me the opportunity to combine by experience in chemistry and drug discovery with my new skills in Python programming and data science. I looked for short online courses and textbooks to get experience with cheminformatics problems and gain an understanding of the basics.
 
-I started with the [Cheminformatics OLCC](https://chem.libretexts.org/Courses/Intercollegiate_Courses/Cheminformatics). This is an introductory course with 8 sections that cover the basics cheminformatics. It starts with help setting up a Python environment, and covers topics such as representing molecules, chemical databases, QSAR modelling, and simple machine learning for chemistry.
+I started with the [Cheminformatics OLCC](https://chem.libretexts.org/Courses/Intercollegiate_Courses/Cheminformatics). This is an introductory course with 8 sections that cover the basics of cheminformatics. It starts with help setting up a Python environment, and covers topics such as representing molecules, chemical databases, QSAR modelling, and simple machine learning for chemistry.
 
-I then worked through [Deep Learning for the Life Sciences](https://www.oreilly.com/library/view/deep-learning-for/9781492039822/). This covers how deep learning is used on molecules, proteins, and nucleic acids, including code so you can follow along.
+I then worked through [Deep Learning for the Life Sciences](https://www.oreilly.com/library/view/deep-learning-for/9781492039822/). As datasets in the life sciences get larger, deep learning becomes more powerful. This covers how deep learning is used on molecules, proteins, and nucleic acids, including code so you can follow along.
 
 I found attending meetings and conferences on AI and cheminformatics was a great way to learn about current areas of research and meet interesting people doing similar research. This list is mostly limited to my local area (Cambridgeshire, UK).
 
-* [Cambridge Cheminformatics Network Meetings](http://c-inf.net/) run every quarter with three speakers presenting their work. Free to attend in person or virtually via zoom. There’s “networking” (a pub trip) afterwards.
+* [Cambridge Cheminformatics Network Meetings](http://c-inf.net/) run every quarter with three speakers presenting their work. Free to attend in person or virtually via zoom. There’s a “networking” opportunity (a pub trip) afterwards.
 * [UK QSAR meetings](https://ukqsar.org/index.php/category/meetings/) are twice a year and free to attend with high quality speakers.
 * [The RSC AI in Chemistry Conference](https://www.rscbmcs.org/events/aichem7/) is a multi-day annual meeting with speakers from all over the world presenting the cutting edge of research.
 * [Cambridge AI Club for Biomedicine](https://www.milner.cam.ac.uk/ai-club/) - I've not been to this one yet, but the topics discussed at previous meetings look interesting.
@@ -118,3 +120,17 @@ And a few useful journals to add to your RSS feed:
 * [Artificial Intelligence in the Life Sciences](https://www.sciencedirect.com/journal/artificial-intelligence-in-the-life-sciences)
 * [Journal of Chemical Information and Modeling](https://pubs.acs.org/journal/jcisd8)
 * [Journal of Computer-Aided Molecular Design](https://link.springer.com/journal/10822)
+
+---
+
+## :memo: Summary
+
+When I started writing this post, I didn't expect it to be quite so long! Looking back at the process of re-training I realise how much work it took, and how lucky I was to have family to help support me through it all. I'm also incredibly glad I did it! My current job suits me so much more than the lab work I was doing before.
+
+I think the general process I went through worked well, but there are still a few changes I would make if I could do it all again. I've heard that getting your first data science job has three equally important parts:
+
+1. Your skills (e.g. Python, SQL, etc.)
+2. Your portfolio and experience (e.g. Boot-camps, personal projects, internships)
+3. Your network (Friends, colleagues, recruiters)
+
+In the search for my first job, I over-prioritised improving my skills, spending a lot of time doing courses. Whilst this is important for succeeding at a job, getting the job requires a wider focus. If I were to do it again, I would spend more time on personal projects to put on my github, and networking with other data scientists, asking about what problems their companies have and how I might be able to help fix them. When I finally did get my first data science job, it's no surprise it was on the recommendation of a previous colleague.
