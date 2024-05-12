@@ -13,7 +13,7 @@ minima:
   social_links:
     - { platform: github,  user_url: "https://github.com/jonswain" }
     - { platform: linkedin, user_url: "https://www.linkedin.com/in/jonathan-swain/"}
-    - { platform: twitter, user_url: "https://twitter.com/JonSwain20" }
+    - { platform: twitter, user_url: "https://twitter.com/jon_swain_" }
 
 theme: minima
 plugins:
