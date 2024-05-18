@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Working with large virtual chemical libraries: Part 1 - Active Learning"
-date:   2024-05-18 12:00:00 +0100
+date:   2024-05-18 12:04:00 +0100
 categories: 
     - active learning
     - AI
@@ -11,7 +11,7 @@ categories:
     - ultra-large libraries
 ---
 
-This is part 1 of a a planned three post series on working with large chemical libraries.
+This is part 1 of a planned three post series on working with large chemical libraries.
 The notebook used to create this post and all the files can be found in [this github repo](https://github.com/jonswain/active-learning).
 
 ---
