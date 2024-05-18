@@ -23,4 +23,4 @@ plugins:
 google_analytics: G-R6CVGR431E
 
 header_pages:
-  - 
+  - about.markdown
