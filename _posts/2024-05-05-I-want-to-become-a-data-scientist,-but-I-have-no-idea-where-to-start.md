@@ -96,6 +96,10 @@ I started with the [Cheminformatics OLCC](https://chem.libretexts.org/Courses/In
 
 I then worked through [Deep Learning for the Life Sciences](https://www.oreilly.com/library/view/deep-learning-for/9781492039822/). As datasets in the life sciences get larger, deep learning becomes more powerful. This covers how deep learning is used on molecules, proteins, and nucleic acids, including code so you can follow along.
 
+I also attended the [AI4SD](https://www.ai4science.network) Machine Learning Summer School at the University of Southampton. This was a week of lectures on topics such as machine learning, github, and LaTeX, with a focus on applications in chemistry. The week ended with a hackathon where we worked as a team to solve a chemical property prediction problem.
+
+[TeachOpenCADD](https://volkamerlab.org/projects/teachopencadd/) looks like another great resource. I've not yet had the chance to go through it in detail, but it has a wide range of Jupyter Notebooks on all sorts of cheminformatics topics.
+
 I found attending meetings and conferences on AI and cheminformatics was a great way to learn about current areas of research and meet interesting people doing similar research. This list is mostly limited to my local area (Cambridgeshire, UK).
 
 * [Cambridge Cheminformatics Network Meetings](http://c-inf.net/) run every quarter with three speakers presenting their work. Free to attend in person or virtually via zoom. There’s a “networking” opportunity (a pub trip) afterwards.
@@ -108,7 +112,7 @@ There's a load of useful blogs and newsletters for keeping up to date with chemi
 
 * [DrugDiscovery.NET - AI in Drug Discovery](http://www.drugdiscovery.net/) - A newsletter from Andreas Bender. It contains interesting links, details of events, and job listings in cheminformatics.
 * [Practical Cheminformatics](https://practicalcheminformatics.blogspot.com/) by Pat Walters. Some useful posts for common cheminformatics projects and issues.
-* [The RDKit Blog](https://greglandrum.github.io/rdkit-blog/index.html) Greg Landrum. RDKit is probably the most useful Python library for a cheminformatician, this blog is incredibly useful.
+* [The RDKit Blog](https://greglandrum.github.io/rdkit-blog/index.html) Greg Landrum. RDKit is probably the most useful Python library for a cheminformatician, this blog has some great tips.
 * [Cheminfomania](https://www.cheminformania.com/)
 * [Oxford Protein Informatics Group](https://www.blopig.com/blog/)
 * [Is Life Worth Living?](https://iwatobipen.wordpress.com)
