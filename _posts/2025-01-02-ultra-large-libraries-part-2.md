@@ -13,7 +13,6 @@ categories:
 This is part 2 of a a planned three post series on working with large chemical libraries.
 The notebook used to create this post, and all the files can be found in [this github repo](https://github.com/jonswain/ga-for-ul-libraries).
 
-
 The first post in this series on active learning can be [found here](https://jonswain.github.io/active%20learning/ai/cheminformatics/data%20science/machine%20learning/ultra-large%20libraries/2024/05/18/ultra-large-libraries-part-1.html).
 
 ---
@@ -33,6 +32,7 @@ Genetic algorithms are biologically inspired, based on biological natural select
 Initially a random population of the unlabelled data is selected by randomly choosing building blocks and enumerating the reaction products from these building blocks.
 
 The genetic algorithm has a cycle that is repeated, and each round is called a generation.
+
 1. The population is labelled using the expensive scoring function.
 2. A selection pressure is applied to the population (the lowest scoring compounds in the population are removed).
 3. A new population is created by randomly shuffling the building blocks from the surviving population (mating).
@@ -44,7 +44,6 @@ The genetic algorithm has a cycle that is repeated, and each round is called a g
 ## Imports
 
 First, we need to import the libraries we will be using.
-
 
 ```python
 import math
@@ -65,7 +64,6 @@ from tqdm import tqdm
 
 The first function we will define is the expensive scoring function, this will take a list of RDKit molecules and return a list of scores. As in the previous example, I'm going to try find the compound from within the library with the lowest calculated Log P (cLogP). This is actually a very fast calculation and can be done exhaustively, which means we can confirm if the genetic algorithm is finding the lowest value and triggering the early stopping.
 
-
 ```python
 def calc_logp(mols: list[Chem.Mol]) -> list[float]:
     """Calculate the logP value for a list of compounds.
@@ -84,7 +82,6 @@ def calc_logp(mols: list[Chem.Mol]) -> list[float]:
 Next, we need to define some useful functions for the active learning pipeline.
 
 The first function takes the indices of three building blocks and enumerates the product of their reaction. Since not all combinations are possible, it will return None if the reaction fails. The second function takes the surviving population from the selection pressure and creates a new population by shuffling the building blocks. The third takes the new shuffled population and adds in random mutations, this prevents the algorithm getting stuck in a local minimum by ensuring building block diversity.
-
 
 ```python
 def make_molecule(
@@ -169,7 +166,6 @@ The genetic algorithm needs the lists of building blocks, a reaction to couple t
 - `num_generations`: The number of cycles of the genetic algorithm to run. More generations will give a better chance of finding the optimum value but will take longer to run.
 - `selection_pressure`: The fraction of the population to remove each cycle. A stronger selection pressure will speed up selection but increase the chance of being caught in a local minimum.
 - `mutation_rate`: The proportion of building blocks in the new population to replace with a random building block. A too high value will stop the algorithm finding the best combination, but a too low value will also increase the chance of being caught in a local minimum.
-
 
 ```python
 def run_genetic_algorithm(
@@ -260,7 +256,6 @@ def run_genetic_algorithm(
 
 This function fully enumerates a virtual library by combining three sets of building blocks. The smi files used here were borrowed from [Pat Walters repository on Thompson sampling](https://github.com/PatWalters/TS). This is not necessary for the genetic algorithm but will allow us to see if the genetic algorithm if finding the best values.
 
-
 ```python
 def build_virtual_library() -> pd.DataFrame:
     """Build a virtual library by coupling building blocks from the input smi files.
@@ -322,8 +317,7 @@ for bb in ["aminobenzoic", "carboxylic_acids", "primary_amines"]:
 
 ## Example 1: Finding the compound with the lowest cLogP
 
-The genetic algorithm was used to find the lowest cLogP from within the library. This was repeated 10 times with no tuning of the hyperparameters which may improvement performance. The genetic algorithm reliably finds the combination of building blocks with the lowest cLogP in the combinatorial library, nearly 100 times faster than enumerating the entire library. On average the genetic algorithm only had to enumerate and score 600 combinations before it found the best scoring combination. 
-
+The genetic algorithm was used to find the lowest cLogP from within the library. This was repeated 10 times with no tuning of the hyperparameters which may improvement performance. The genetic algorithm reliably finds the combination of building blocks with the lowest cLogP in the combinatorial library, nearly 100 times faster than enumerating the entire library. On average the genetic algorithm only had to enumerate and score 600 combinations before it found the best scoring combination.
 
 ```python
 # GA parameters
@@ -384,40 +378,26 @@ print(
     f"GA was {improvement:.2f} times faster than building and scoring the virtual library"
 )
 ```
-
     Creating virtual library
-
-
     100%|██████████| 1000000/1000000 [01:48<00:00, 9183.87it/s]
-
-
     Virtual library created in 120.60 seconds
+
     Calculating logP values for the library
-
-
     100%|██████████| 132500/132500 [00:27<00:00, 4803.96it/s]
-
-
     Minimum logP in the library: -5.00
     LogP calculations took 27.59 seconds
+    
     Running genetic algorithm 10 times
-
-
     100%|██████████| 10/10 [00:14<00:00,  1.41s/it]
 
     Genetic algorithm run took 1.41 seconds on average, with a maximum of 12 generations
     GA was 81.90 times faster than building and scoring the virtual library
-
-
-    
-
 
 ---
 
 ## Example 2: Recovering a random compound from within the library using Tanimoto similarity
 
 A reference molecule was randomly selected from the library, and the genetic algorithm was used to recover it from the library by maximising the Tanimoto similarity. In the active learning experiments, this was failing, possibly due to the low number of compounds from within the library with high Tanimoto similarities. The genetic algorithm was able to recover the reference molecule every time, taking less than a second to do so each time.
-
 
 ```python
 def calc_similarity(comparison_mols: list[Chem.Mol], ref_mol: Chem.Mol) -> list[float]:
@@ -488,12 +468,9 @@ print(
     f"GA was {improvement:.2f} times faster than scoring the virtual library with Tanimoto similarity"
 )
 ```
-
     Scoring the virtual library
     Tanimoto calculations took 7.41 seconds
     Running genetic algorithm 10 times
-
-
     100%|██████████| 10/10 [00:07<00:00,  1.29it/s]
 
     Genetic algorithm run took 0.77 seconds on average, with a maximum of 9 generations
