@@ -31,13 +31,13 @@ Active learning is a machine learning method for searching large libraries when 
 The initial steps are:
 
 1. A random compound is selected as a reference compound.
-2. A random sample of the unlabelled data is selected and labelled using the expensive scoring function (Tanimoto similarity).
-3. These labelled datapoints are used to train a simple machine learning (random forest) regressor.
+2. A random sample of the unlabelled data is selected and labelled using the expensive scoring function.
+3. These labelled datapoints are used to train a simple machine learning model.
 
 Followed then by a repeating cycle:
 
-1. The regressor is used to score the entire library.
-2. The compounds with the highest scores from the machine learning regressor are labelled using the expensive scoring function.
+1. The machine learning model is used to score the entire library.
+2. The compounds with the highest scores from the machine learning model are labelled using the expensive scoring function.
 3. The labels from the expensive scoring function are pooled and the machine learning model is re-trained.
 
 ---
