@@ -317,7 +317,7 @@ for bb in ["aminobenzoic", "carboxylic_acids", "primary_amines"]:
 
 ## Example 1: Finding the compound with the lowest cLogP
 
-The genetic algorithm was used to find the lowest cLogP from within the library. This was repeated 10 times with no tuning of the hyperparameters which may improvement performance. The genetic algorithm reliably finds the combination of building blocks with the lowest cLogP in the combinatorial library, nearly 100 times faster than enumerating the entire library. On average the genetic algorithm only had to enumerate and score 600 combinations before it found the best scoring combination.
+The genetic algorithm was used to find the lowest cLogP from within the library. This was repeated 10 times with no tuning of the hyperparameters which may improve performance. The genetic algorithm reliably finds the combination of building blocks with the lowest cLogP in the combinatorial library, nearly 100 times faster than enumerating the entire library. On average the genetic algorithm only had to enumerate and score 600 combinations before it found the best scoring combination.
 
 ```python
 # GA parameters
