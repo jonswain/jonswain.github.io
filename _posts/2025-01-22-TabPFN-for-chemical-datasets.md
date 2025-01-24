@@ -11,8 +11,6 @@ categories:
 
 Deep Learning models have traditionally performed well on unstructured data such as text and images, but poorly on structured tabular data, and are usually outperformed by Gradient Boosted Decision Trees (GBDTs) on tabular chemical data. TabPFN (Tabular Prior-data Fitted Network) is a transformer-based foundation model for tabular data, pre-trained on millions of synthetic datasets to solve supervised learning tasks, with state-of-the-art performance on benchmarks. But does it work for cheminformatics?
 
-#ArtificialIntelligence #DrugDiscovery #Cheminformatics #AIForScience #AIInChemistry
-
 ---
 
 ## TabPFN
