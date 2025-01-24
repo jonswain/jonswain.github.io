@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Working with large virtual chemical libraries: Part 2 - Genetic Algorithms"
+title:  "Working with large virtual chemical libraries: Part 2 - Genetic algorithms"
 date:   2025-01-02 12:00:00 +0100
 categories: 
     - AI

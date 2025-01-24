@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Working with large virtual chemical libraries: Part 1 - Active Learning"
+title:  "Working with large virtual chemical libraries: Part 1 - Active learning"
 date:   2024-05-18 12:04:00 +0100
 categories: 
     - active learning
