@@ -7,7 +7,7 @@ A personal blog on data science and cheminformatics.
 To locally host the blog:
 
 ```zsh
-bundle exec jekyll serve --livereload 
+bundle exec jekyll serve --livereload
 ```
 
 To create a .md version of a .ipynb file for a post:
