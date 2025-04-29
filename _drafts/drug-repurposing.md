@@ -13,6 +13,8 @@ categories:
 ---
 
 An unwelcome cyclone may have cancelled my hiking plans, but it gave me the opportunity to delve into the fascinating world of drug repurposing. This blog post explores how identifying new uses for existing drugs can dramatically accelerate and reduce the cost of bringing vital treatments to patients, and how recent advances in machine learning can further streamline this process.
+  
+---
 
 Over the Easter long weekend, Auckland was visited by Cyclone Tam, which meant my hiking trip was cancelled. At least it gave me some time to work on a few projects and finish this blog post I'd been meaning to do for a while!
 
