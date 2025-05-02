@@ -232,7 +232,9 @@ if __name__ == "__main__":
 
 Manually running the script with `python traffic-widget.py` should cause the following pop-up:
 
-![An example noficiation](/images/traffic_widget/traffic_notification.png){:class="img-responsive"}
+<div style="text-align: center;">
+![An example notification](/images/traffic_widget/traffic_notification.png){:class="img-responsive"}
+</div>
 
 ## Setting up a cron job to automatically run the script
 
