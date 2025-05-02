@@ -232,7 +232,9 @@ if __name__ == "__main__":
     notifier.show_notification("Driving times:", notification_message)
 ```
 
-Manually running the script with `python traffic-widget.py` should cause the notification to pop up.
+Manually running the script with `python traffic-widget.py` should cause the following pop-up:
+
+![An example notification](/images/traffic_widget/traffic_notification.png){:class="img-responsive"}
 
 ## Setting up a cron job to automatically run the script
 
