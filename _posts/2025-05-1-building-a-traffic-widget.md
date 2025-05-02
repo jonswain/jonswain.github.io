@@ -3,24 +3,26 @@
 ---
 layout: post
 title: "Building a Traffic Reminder Widget"
-date: 2025-05-10 12:00:00 +0100
+date: 2025-05-01 12:00:00 +0100
 categories:
   - general
 ---
 
-Abstract goes here
+Why spend a couple minutes doing something when you can spend an hour automating it? This is a WSL-based Python application to display Windows PowerShell notifications about driving conditions on your commute.
 
 ---
 
 ## Introduction
 
-- I usually cycle to work, but occasionally I do have to drive
-- Sadly traffic in Auckland can be awful, some days I find myself checking google maps every 5 minutes to see how the traffic is on my route home.
-- Why not automate it and have a reminder pop up on my screen (https://xkcd.com/1205/)
-- Sadly my work machine runs Windows, so I use WSL.
-- I've also been experimenting with Google Gemini as a coding assistant. This wasn't completely vibe-coding, but as this was a quick personal project, I was much less vigarous in checking the code it generated compared to more important work!
+No data science or cheminformatics today!
 
-First we need to import the necessary libraries:
+I usually cycle or get public transport to work, but occasionally I do have to drive. The traffic in Tāmaki Makaurau (Auckland) is very variable, especially on rainy or windy days, so I often find myself checking Google Maps every 5 minutes after 4 pm to work out when I need to leave to get home. As with anything that I have to do repeatedly, [I decided  to automate it](https://xkcd.com/1205/).
+
+My work computer runs Windows so I use [WSL](https://learn.microsoft.com/en-us/windows/wsl/about), which adds a few extra complications. All the code needed can be found in [this repository](https://github.com/jonswain/traffic-widget).
+
+(I've also been experimenting with Google Gemini as a coding assistant. This wasn't completely [vibe-coding](https://en.wikipedia.org/wiki/Vibe_coding), but as this was a quick personal project, I was much less vigorous in checking the code it generated compared to more important work!)
+
+All the Python code is kept in a file called `traffic-widget.py` which is stored on my WSL disk, I first needed to import the necessary libraries:
 
 ```python
 import datetime
@@ -34,9 +36,7 @@ from dotenv import load_dotenv
 
 ## Getting the traffic data
 
-- Google maps doesn't seem to have a completely free API. You have to sign up and give credit card details, which is always a worry incase you accidentally go over the free limits (or accidentally leak your API key to the internet).
-- TomTom does have a free API, you have to sign up and get an API key, and it comes with plenty of free requests.
-- Created a TomTomAPI class, this uses your API key to make calls to the route calculation endpoint, providing the GPS coordinates for the start and end of your route, and returns the travel time.
+Google maps doesn't seem to have a [completely free API](https://mapsplatform.google.com/pricing/). They do offer some free usage, but you still have to sign up and give credit card details, which is always a worry in case you accidentally go over the free limits (or accidentally leak your API key to the internet). TomTom on the other hand does have a [free API](https://www.tomtom.com/products/map-display-api/), you have to sign up and get an API key, and it comes with plenty of free requests. After signing up and getting and API key, I first created a TomTomAPI Python class, this uses the API key to make calls to the route calculation endpoint, providing the GPS coordinates for the start and end of your route, and returns the travel time.
 
 ```python
 class TomTomAPI:
@@ -83,13 +83,13 @@ class TomTomAPI:
 
 ### Create the PowerShell script for the notification
 
-Run powershell as admin
+To display the notifications I used BurntToast, a Windows PowerShell module for displaying Toast Notifications. To install, I needed to run PowerShell as admin and enter:
 
 ```PowerShell
 Install-Module -Name BurntToast
 ```
 
-Adding `-Sound Alarm5` also makes notification last longer. `-AppLogo` gives icon beside the notification
+BurntToast can be called from a PowerShell file (`.ps1`). The PowerShell file to display notifications is called `show_notitication.ps1` and is stored on my Windows disk. The `-Sound Alarm5` adds a sound to the notification and makes it last longer and `-AppLogo` gives icon beside the notification.
 
 ```ps1
 param(
@@ -102,13 +102,15 @@ $ImagePath = 'C:\Path\to\icon.jpg'
 New-BurntToastNotification -Text $Title, $Message -AppLogo $ImagePath -Sound Alarm5
 ```
 
-Allowing script to run (TODO: Some research on this)
+To allow the script to run, it may be necessary to run this command in PowerShell as admin:
 
 ```PowerShell
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 ```
 
 ## Running the PowerShell script from WSL
+
+Back in the Python file (`traffic-widget.py`), I next needed a class to run the PowerShell file to display the notification.
 
 ```python
 class WindowsNotifier:
@@ -150,14 +152,14 @@ class WindowsNotifier:
             print(f"Error: PowerShell executable or script not found. Check the paths.")
 ```
 
-### A helpful function to format the notification message
+This function formats the data from the TomTomAPI to be a more clear.
 
 ```python
 def format_travel_time(label: str, travel_time: int | None) -> str:
     """Format the travel time into a readable string.
 
     Args:
-        label (str): The label for the travel time (e.g., "Home", "Rowing").
+        label (str): The label for the travel time (e.g., "Home").
         travel_time (int | None): The travel time in seconds, or None if an error occurred.
 
     Returns:
@@ -175,11 +177,10 @@ def format_travel_time(label: str, travel_time: int | None) -> str:
 
 ## Storing environment variables
 
-Powershell path is something like "/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe"
-Powershell script is in Windows format with escaped backslashes.
+To prevent sharing sentitive data such as my API key and home address, I stored these in a `.env` file. This also stores the paths to Windows PowerShell and the PowerShell script. Since this is working between two operating systems, the paths are slightly more complicated than usual. The PowerShell path is the path to the `powershell.exe` file on your Windows disk, from your Linux environment. This is usually something like: `/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe`. The Powershell script is in Windows format with escaped backslashes.
 
 ```env
-API_KEY = "your_api_keu"
+API_KEY = "your_api_key"
 WORK_LATITUDE = "work_latitude"
 WORK_LONGITUDE = "work_longitude"
 HOME_LATITUDE = "home_latitude"
@@ -189,7 +190,18 @@ POWERSHELL_PATH = "/mnt/c/path/to/powershell.exe"
 POWERSHELL_SCRIPT = "C:\\windows\\path\\to\\show_notification.ps1"
 ```
 
+## Creating a conda environment to run the script
+
+To run the Python script I used a conda environment. It can be created and activated with:
+
+```bash
+conda env create -f environment.yml
+conda activate traffic-widget
+```
+
 ## Running the script
+
+Finally I needed some Python code to run the whole process:
 
 ```python
 if __name__ == "__main__":
@@ -220,4 +232,20 @@ if __name__ == "__main__":
     notifier.show_notification("Driving times:", notification_message)
 ```
 
+Manually running the script with `python traffic-widget.py` should cause the following pop-up:
+
 ![An example noficiation](/images/traffic_widget/traffic_notification.png){:class="img-responsive"}
+
+## Setting up a cron job to automatically run the script
+
+To make the script run automatically, back in WSL, I ran:
+
+```bash
+crontab -e
+```
+
+And added the details for the cron job. I wanted mine to run every 5 minutes from 4-5 pm on weekdays. 
+
+```
+0-55/5 16 * * 1-5 /home/<username>/miniconda3/envs/traffic-widget/bin/python /home/<username>/path/to/traffic-widget/traffic-widget.py
+```
