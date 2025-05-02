@@ -6,6 +6,8 @@ categories:
   - general
 ---
 
+![An example notification](/images/traffic_widget/traffic_notification.png){:class="img-responsive"}
+
 Why spend a couple minutes doing something when you can spend an hour automating it? This is a WSL-based Python application to display Windows PowerShell notifications about driving conditions on your commute.
 
 ---
@@ -230,11 +232,7 @@ if __name__ == "__main__":
     notifier.show_notification("Driving times:", notification_message)
 ```
 
-Manually running the script with `python traffic-widget.py` should cause the following pop-up:
-
-<div style="text-align: center;">
-![An example notification](/images/traffic_widget/traffic_notification.png){:class="img-responsive"}
-</div>
+Manually running the script with `python traffic-widget.py` should cause the notification to pop up.
 
 ## Setting up a cron job to automatically run the script
 
