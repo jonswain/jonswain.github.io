@@ -14,7 +14,7 @@ categories:
 
 ## :seedling: Time for a change
 
-In 2020 I was working as a synthetic chemist in a laboratory in New Zealand. I was getting disillusioned with the work (and academia in general) and started looking for a new career direction and new challenges. After chatting with a few friends who were working as data scientists I realised that my current interests in scientific computing, statistics, and drug discovery would transfer nicely to a job as a data scientist or cheminformatician.
+In 2020 I was working as a synthetic chemist in a laboratory in Aotearoa (New Zealand). I was getting disillusioned with the work (and academia in general) and started looking for a new career direction and new challenges. After chatting with a few friends who were working as data scientists I realised that my current interests in scientific computing, statistics, and drug discovery would transfer nicely to a job as a data scientist or cheminformatician.
 
 It felt like an emerging field within biomedical research, with huge potential. Alphafold 2 had just been released and was causing a lot of excitement, but the LLM hype was still yet to fully start (ChatGPT was still a few years away). It seemed like a perfect time to make the jump to a new, exciting field that would grow in the future.
 
