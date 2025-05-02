@@ -1,5 +1,3 @@
-# Building a Traffic Reminder Widget
-
 ---
 layout: post
 title: "Building a Traffic Reminder Widget"
