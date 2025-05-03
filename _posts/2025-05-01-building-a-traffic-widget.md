@@ -6,9 +6,7 @@ categories:
   - general
 ---
 
-<div class="center-image">
-![An example notification](/images/traffic_widget/traffic_notification.png){:class="img-responsive"}
-</div>
+![An example notification](/images/traffic_widget/traffic_notification.png){:class="img-responsive center-image"}
 
 ---
 
@@ -234,9 +232,7 @@ if __name__ == "__main__":
 
 Manually running the script with `python traffic-widget.py` should cause the following pop-up:
 
-<div class="center-image">
-![An example notification](/images/traffic_widget/traffic_notification.png){:class="img-responsive"}
-</div>
+![An example notification](/images/traffic_widget/traffic_notification.png){:class="img-responsive center-image"}
 
 ## Setting up a cron job to automatically run the script
 
