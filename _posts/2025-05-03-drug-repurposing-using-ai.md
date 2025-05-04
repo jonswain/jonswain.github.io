@@ -307,7 +307,7 @@ visualize_top_predictions(search)
 
 ### COVID-19
 
-The COVID-19 pandemic has caused the deaths of over 7 million people so far, and in 2020 more than half og the world's population was under some form of lockdown. With the speed that COVID spread around the globe, there was no time to develop new drug from scratch, and drug repurposing was explored in clinics to find treatments. In this example, I didn't find any promising compounds in the Drug Repurposing Hub, but with a much smaller dataset than for malaria, the machine learning model is potentially much less powerfull.
+The COVID-19 pandemic has caused the deaths of over 7 million people so far, and in 2020 more than half of the world's population was under some form of lockdown. With the speed that COVID spread around the globe, there was no time to develop new drug from scratch, and drug repurposing was explored in clinics to find treatments. In this example, I didn't find any promising compounds in the Drug Repurposing Hub, but with a much smaller dataset than for malaria, the machine learning model is potentially much less powerfull.
 
 ```python
 search = "SARS-CoV-2"
