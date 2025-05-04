@@ -1,9 +1,7 @@
-# Drug Repurposing using Artificial Intelligence
-
 ---
 layout: post
 title: "Drug Repurposing using Artificial Intelligence"
-date: 2025-04-20 12:00:00 +0100
+date: 2025-05-02 12:00:00 +0100
 categories:
   - AI
   - cheminformatics
@@ -13,10 +11,10 @@ categories:
 ---
 
 An unwelcome cyclone may have cancelled my hiking plans, but it gave me the opportunity to delve into the fascinating world of drug repurposing. This blog post explores how identifying new uses for existing drugs can dramatically accelerate and reduce the cost of bringing vital treatments to patients, and how recent advances in machine learning can further streamline this process.
-  
+
 ---
 
-Over the Easter long weekend, Auckland was visited by Cyclone Tam, which meant my hiking trip was cancelled. At least it gave me some time to work on a few projects and finish this blog post I'd been meaning to do for a while!
+Over the Easter long weekend, Tāmaki Makaurau (Auckland) was visited by Cyclone Tam, which meant my hiking trip was cancelled. At least it gave me some time to work on a few projects and finish this blog post I'd been meaning to do for a while!
 
 ## Drug Repurposing
 
@@ -48,7 +46,6 @@ Lacking access to a physical lab for experimental data, I needed an alternative 
 
 ## Imports
 
-
 ```python
 import subprocess
 from pathlib import Path
@@ -66,7 +63,6 @@ Path("models").mkdir(exist_ok=True)
 ## Getting the Data from ChEMBL
 
 Using the ChEMBL Webservice, I downloaded the data associated with a target for training a machine learning model using the three functions below. The first searches ChEMBL with a target name, and returns the target ChEMBL ID of the most similar target. The second downloads the activity data associated that the target ChEMBL ID, along with the molecular ChEMBL IDs. The third returns the canonical SMILES for the molecular ChEMBL IDs.
-
 
 ```python
 target = new_client.target
@@ -121,7 +117,6 @@ def get_molecule_data(molecule_chembl_ids: list[str]) -> pd.DataFrame:
 
 Chemprop takes the data in the form of a table containing one column of SMILES strings, and one columns of activities. For this example I am creating a classification model, so the activity column is a binary classification (1 or 0). The first function takes the activity data and molecule data and merges them on the molecule ChEMBL ID, before cleaning the data up and creating the binary variable based on a cutoff. This cutoff can be changed depending on the target and dataset. I've always found the CLI usage of Chemprop easier, so the data is saved as a CSV file for training.
 
-
 ```python
 def create_training_data(
     activity_data: pd.DataFrame, molecule_data: pd.DataFrame, nm_cutoff: float
@@ -136,7 +131,7 @@ def create_training_data(
                 on="molecule_chembl_id",
                 how="left",
             )
-            .dropna(subset="canonical_smiles")
+            .dropna(how="any")
             .drop(columns="molecule_chembl_id")
         )
         .groupby("canonical_smiles", as_index=False)
@@ -166,7 +161,6 @@ def save_training_data(
 
 This function downloaded the Drug Repurposing Hub dataset, tidies the data up and saves it for making predictions using Chemprop.
 
-
 ```python
 def canon_smiles(smiles: str) -> str | None:
     """Convert SMILES string to canonical SMILES."""
@@ -179,7 +173,7 @@ def canon_smiles(smiles: str) -> str | None:
 def download_drug_repurposing_hub() -> None:
     """Download the Drug Repurposing Hub dataset."""
     if Path("data/drug_repurposing_hub.csv").exists():
-        print("Drug Repurposing Hub dataset already downloaded.")
+        print("Drug Repurposing Hub dataset already downloaded")
         return None
     url = "https://storage.googleapis.com/cdot-general-storage/repurposing_samples_20240610.txt"
     drug_repurposing_df = pd.read_csv(
@@ -191,11 +185,11 @@ def download_drug_repurposing_hub() -> None:
     drug_repurposing_df.dropna(subset=["smiles"], inplace=True)
     drug_repurposing_df.drop_duplicates(subset=["smiles"], keep="first", inplace=True)
     drug_repurposing_df.to_csv("data/drug_repurposing_hub.csv", index=False)
-    print("Drug Repurposing Hub dataset downloaded and processed.")
+    print("Drug Repurposing Hub dataset downloaded and processed")
     print(f"Number of unique SMILES: {len(drug_repurposing_df['smiles'].unique())}")
 ```
 
-## Make Predictions on the Drug Repurposing Hub Data Using the Trained Model
+## Make Predictions on the Drug Repurposing Hub Data
 
 As I mentioned above, I find the CLI usage of Chemprop easier (especially since the move from v1 to v2), so here I'm using subprocess to run Chemprop. These two functions train a Chemprop model, and make predictions on the Drug Repurposing Hub data.
 
@@ -213,17 +207,15 @@ def train_chemprop_model(target_name: str, data_dir: str, output_dir: str) -> No
         "classification",
         "--save-dir",
         f"{output_dir}/{target_name.replace(" ", "_")}",
-        "--features-generator",
-        "v1_rdkit_2d",
         "--split-type",
         "scaffold_balanced",
-        "-q"
     ]
     subprocess.run(chemprop_train_args, check=True)
 
 
 def predict_with_chemprop(target_name: str, preds_dir: str, model_dir: str) -> None:
     """Predict using the ChemProp model."""
+    print(f"Predicting with ChemProp model for {target_name}")
     chemprop_predict_args = [
         "chemprop",
         "predict",
@@ -233,11 +225,8 @@ def predict_with_chemprop(target_name: str, preds_dir: str, model_dir: str) -> N
         f"{model_dir}/{target_name.replace(" ", "_")}",
         "--smiles-columns",
         "smiles",
-        "--features-generator",
-        "v1_rdkit_2d",
         "--preds-path",
         f"{preds_dir}/{target_name.replace(" ", "_")}_predictions.csv",
-        "-q"
     ]
     subprocess.run(chemprop_predict_args, check=True)
 ```
@@ -255,7 +244,7 @@ def visualize_top_predictions(search: str) -> None:
         .sort_values("activity", ascending=False)
         .head(9)
     )
-    Draw.MolsToGridImage(
+    return Draw.MolsToGridImage(
         [Chem.MolFromSmiles(s) for s in predictions_df["smiles"]],
         legends=[f"{a:.2f}" for a in predictions_df["activity"]],
         molsPerRow=3,
@@ -278,17 +267,15 @@ def run_repurposing_pipeline(search: str, nm_cutoff=25) -> None:
         activity_data, molecule_data, nm_cutoff=nm_cutoff
     )
     save_training_data(training_data, search.replace(" ", "_"), Path("data"))
-    train_chemprop_model(
-        target_name=search, data_dir="data", output_dir="models/chemprop"
-    )
-    predict_with_chemprop(
-        target_name=search, preds_dir="data", model_dir="models/chemprop"
-    )
+    train_chemprop_model(target_name=search, data_dir="data", output_dir="models/")
+    predict_with_chemprop(target_name=search, preds_dir="data", model_dir="models/")
 ```
 
 ## Run the Drug Repurposing Pipeline
 
-The first example is running drug repurposing for Malaria (neglected tropical disease), kills XX millions each year.
+### Malaria
+
+Malaria kills around half a million people per year, with 76% of global malaria deaths in children under 5 years old. It is considered a neglected tropical disease (NTD) due to its significant impact on global health, particularly in low-income countries. It disproportionately affects some of the world's poorest people, and is often overlooked in global health efforts. Drug repurposing could offer alternative therapies significantly cheaper than developing an entirely new drug. Here I look to target the most deadly species of parasite that carries malaria - *Plasmodium falciparum*. After training the Chemprop model and screening the Drug Repurposing Hub, some compounds are flagged as potential hits and could be investigated experimentally.
 
 
 ```python
@@ -298,12 +285,48 @@ run_repurposing_pipeline(search)
 visualize_top_predictions(search)
 ```
 
-The second example is running drug repurposing for COVID-19.
+    Drug Repurposing Hub dataset downloaded and processed
+    Number of unique SMILES: 6734
+    Searching for target: "Plasmodium falciparum"
+    Target name: Plasmodium falciparum, ChEMBL ID: CHEMBL364
+    Getting activity data for CHEMBL364
+    Found 45314 activities
+    Processing Activities: 100%|██████████| 45314/45314 [00:02<00:00, 15928.83it/s]
+    Getting molecule data for 45314 ChEMBL IDs
+    Processing Molecules: 100%|██████████| 21821/21821 [1:32:46<00:00,  3.92it/s]
+    Creating training data
+    Actives: 2677 (12.30%), Inactives: 19082
+    Saving training data to data
+    Training data saved to data/Plasmodium_falciparum_training_data.csv
+    Training ChemProp model for Plasmodium falciparum
+    Predicting with ChemProp model for Plasmodium falciparum
+    
+![png](/images/drug_repurposing/malaria-hits.png){:class="img-responsive center-image"}
 
+### COVID-19
+
+The COVID-19 pandemic has caused the deaths of over 7 million people so far, and in 2020 more than half og the world's population was under some form of lockdown. With the speed that COVID spread around the globe, there was no time to develop new drug from scratch, and drug repurposing was explored in clinics to find treatments. In this example, I didn't find any promising compounds in the Drug Repurposing Hub, but with a much smaller dataset than for malaria, the machine learning model is potentially much less powerfull.
 
 ```python
 search = "SARS-CoV-2"
 
-run_repurposing_pipeline(search)
+run_repurposing_pipeline(search, nm_cutoff=500)
 visualize_top_predictions(search)
 ```
+
+    Drug Repurposing Hub dataset already downloaded
+    Searching for target: "SARS-CoV-2"
+    Target name: SARS-CoV-2, ChEMBL ID: CHEMBL4303835
+    Getting activity data for CHEMBL4303835
+    Found 802 activities
+    Processing Activities: 100%|██████████| 100/100 [00:00<00:00, 9141.70it/s]
+    Getting molecule data for 100 ChEMBL IDs
+    Processing Compounds: 100%|██████████| 80/80 [00:07<00:00, 11.08it/s]
+    Creating training data
+    Actives: 11 (13.92%), Inactives: 68
+    Saving training data to data
+    Training data saved to data/SARS-CoV-2_training_data.csv
+    Training ChemProp model for SARS-CoV-2
+    Predicting with ChemProp model for SARS-CoV-2
+    
+![png](/images/drug_repurposing/covid-hits.png){:class="img-responsive center-image"}
