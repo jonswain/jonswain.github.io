@@ -321,11 +321,11 @@ visualize_top_predictions(search)
     Target name: SARS-CoV-2, ChEMBL ID: CHEMBL4303835
     Getting activity data for CHEMBL4303835
     Found 802 activities
-    Processing Activities: 100%|██████████| 100/100 [00:00<00:00, 9141.70it/s]
-    Getting molecule data for 100 ChEMBL IDs
-    Processing Compounds: 100%|██████████| 80/80 [00:07<00:00, 11.08it/s]
+    Processing Activities: 100%|██████████| 802/802 [00:00<00:00, 12406.99it/s]
+    Getting molecule data for 802 ChEMBL IDs
+    Processing Compounds: 100%|██████████| 490/490 [00:00<00:00, 6081.22it/s]
     Creating training data
-    Actives: 11 (13.92%), Inactives: 68
+    Actives: 71 (14.55%), Inactives: 417
     Saving training data to data
     Training data saved to data/SARS-CoV-2_training_data.csv
     Training ChemProp model for SARS-CoV-2
