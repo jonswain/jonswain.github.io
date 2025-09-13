@@ -9,7 +9,7 @@ categories:
   - machine learning
 ---
 
-Can we combine **d-MPNNs** and **Random Forests** to outperform each of them individually?
+Can we combine d-MPNNs and Random Forests to outperform each of them individually?
 
 ---
 
