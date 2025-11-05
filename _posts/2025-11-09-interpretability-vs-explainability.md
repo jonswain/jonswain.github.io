@@ -11,8 +11,6 @@ categories:
 
 Interpretability and explainability are different concepts in machine learning, yet many cheminformatics authors use the terms interchangably.
 
-Or taking inspiration from a Practical Cheminformatics post title: **Interpretability vs Explainability in Cheminformatics: You're probably doing it wrong.**
-
 ---
 
 Something I've noticed recently in cheminformatics papers is authors using the terms **interpretable** and **explainable** interchangably. These terms have clear definitions, and misusing them risks confusing readers and not communicating research efficiently. This may sound like I'm just being pedantic, but for cheminformatics to become a mature field of research alongside machine learning, we need to demand high standards and statistical rigour in our research and communication.
