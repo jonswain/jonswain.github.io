@@ -25,7 +25,7 @@ In this post I'll be looking into using a genetic algorithm to search a small co
 
 Whilst this method uses a combinatorial library that contains all possible configurations of all three building blocks, it's possible to extend it to more complex combinatorial libraries by [storing the building blocks and reactions as a graph](https://www.youtube.com/watch?v=lNzW6_z_jko). 
 
-## Genetic algorithm
+## Genetic algorithms
 
 Genetic algorithms are biologically inspired, based on biological natural selection. They use a very simple algorithm, with no machine learning or complex statistics. One of the big advantages is that you don't need to fully enumerate of score the entire library, only certain combinations of building blocks need to be enumerated and scores, reducing memory and computational costs. Working in building block space rather than with enumerated structures means the complexity will scale with number of building blocks, which will increase much more slowly than the total library size. The downside of the genetic algorithm is that it requires combinatorial libraries and won't work with large collections of diverse molecules not made up from the same building blocks.
 
