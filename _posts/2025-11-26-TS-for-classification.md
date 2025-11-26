@@ -21,7 +21,7 @@ The second post in this series on genetic algorithms can be [found here](https:/
 
 ## Chemical space and combinatorial libraries
 
-In the first two parts of this series, I've discussed how chemical space is vast. The estimates of the size of theoretical chemical space, ranging from $10^{50}$ to $10^{80}$ possible compounds, vastly exceeds our practical screening capabilities, even when constrained to commercial combinatorial libraries like Enamine REAL, which contains tens of billions of compounds. As previously mentioned, even with a fast scoring function of one second per compound, exhaustively screening a billion-compound library would take over 31 years. This fundamental limitation necessitates the use of intelligent search strategies to efficiently navigate and identify active molecules within these immense virtual spaces.
+In the first two parts of this series, I've discussed how chemical space is vast. The estimates of the size of theoretical chemical space, ranging from 10<sup>50</sup> - 10<sup>80</sup> possible compounds, vastly exceeds our practical screening capabilities, even when constrained to commercial combinatorial libraries like Enamine REAL, which contains tens of billions of compounds. As previously mentioned, even with a fast scoring function of one second per compound, exhaustively screening a billion-compound library would take over 31 years. This fundamental limitation necessitates the use of intelligent search strategies to efficiently navigate and identify active molecules within these immense virtual spaces.
 
 ## Thompson Sampling
 
@@ -35,18 +35,21 @@ Thompson Sampling aims to maximize returns by modeling a **posterior belief dist
 
 In the paper by Walters et al., the "slot machines" are the individual building blocks used in a virtual reaction. These blocks are combined to form a virtual molecule, which is then assessed using a scoring function (the "reward"). Each building block has a belief distribution for the scores associated with compounds containing it, which is updated after the compound is scored.
 
-The authors are seeking to maximize a continuous scoring function. They modeled the reward distribution using a Normal distribution $\mathcal{N}(\mu, \sigma^2)$ with mean $\mu$ and standard deviation $\sigma$:
-$$X \sim \mathcal{N}(\mu, \sigma^2)$$
+The authors are seeking to maximize a continuous scoring function. They modeled the reward distribution using a Normal distribution $$\mathcal{N}(\mu, \sigma^2)$$ with mean $$\mu$$ and standard deviation $$\sigma$$:
 
-After each trial, a Bayesian update was performed on the parameters ($\mu$ and $\sigma$) of the belief distribution for each building block found in the scored compound. Using this method, the authors showed that Thompson Sampling could identify more than half of the top 100 molecules from a docking-based virtual screen of 335 million molecules by evaluating just 1% of the data set.
+$$
+X \sim \mathcal{N}(\mu, \sigma^2)
+$$
+
+After each trial, a Bayesian update was performed on the parameters ($$\mu$$ and $$\sigma$$) of the belief distribution for each building block found in the scored compound. Using this method, the authors showed that Thompson Sampling could identify more than half of the top 100 molecules from a docking-based virtual screen of 335 million molecules by evaluating just 1% of the data set.
 
 ## Thompson Sampling for classification
 
 What if we've built a classification machine learning model to predict compound activity (Active=1, Inactive=0), but we're not able to exhaustatively screen the entire library, can we use Thompson Sampling to find active compounds from our library? We can no longer model our reward distributions using the Normal distribution, as our activity labels are just 0 or 1, and we can't have values greater than 1 or less than 0. Instead we need to use the [Beta Distribution](https://en.wikipedia.org/wiki/Beta_distribution).
 
-The underlying event when scoring each compound is a [Bernoulli trial](https://en.wikipedia.org/wiki/Bernoulli_trial), returning either a success (1) or a failure (0), so we can use the Bernoulli distribution to model the probability the compound containing the building block is active with probability $p$. For the Bayesian statistics required for Thompson Samping, we need to model the uncertainty about $p$. The Beta distribution is the **conjugate prior probability distribution** for the Bernoulli distribution, making it the perfect choice to model the uncertainty about $p$. The Beta distribution is a family of continuous probability distributions defined between 0 and 1, defined by two parameters: alpha ($\alpha$) and beta ($\beta$). Alpha is related to the number of successes (active compounds), and beta to the number of failures (inactive compounds) in the Bernoulli trials.
+The underlying event when scoring each compound is a [Bernoulli trial](https://en.wikipedia.org/wiki/Bernoulli_trial), returning either a success (1) or a failure (0), so we can use the Bernoulli distribution to model the probability the compound containing the building block is active with probability $$p$$. For the Bayesian statistics required for Thompson Samping, we need to model the uncertainty about $$p$$. The Beta distribution is the **conjugate prior probability distribution** for the Bernoulli distribution, making it the perfect choice to model the uncertainty about $$p$$. The Beta distribution is a family of continuous probability distributions defined between 0 and 1, defined by two parameters: alpha ($\alpha$) and beta ($\beta$). Alpha is related to the number of successes (active compounds), and beta to the number of failures (inactive compounds) in the Bernoulli trials.
 
-Traditionally, $\alpha$ is updated by adding 1 for a success, and $\beta$ is updated by adding 1 for a failure. However, since a classification ML model provides a probability prediction ($P_{\text{pred}}$), we can use a more informative soft-update approach: we sum $P_{\text{pred}}$ for $\alpha$ (representing partial success evidence), and sum $1 - P_{\text{pred}}$ for $\beta$ (representing partial failure evidence).
+Traditionally, $$\alpha$$ is updated by adding 1 for a success, and $$\beta$$ is updated by adding 1 for a failure. However, since a classification ML model provides a probability prediction ($$P_{\text{pred}}$$), we can use a more informative soft-update approach: we sum $$P_{\text{pred}}$$ for $$\alpha$$ (representing partial success evidence), and sum $$1 - P_{\text{pred}}$$ for $$\beta$$ (representing partial failure evidence).
 
 ## Data and machine learning classification model
 

@@ -8,6 +8,7 @@ description: >-
 baseurl: ""
 url: "https://jonswain.github.io"
 show_excerpts: true
+enable_math: true
 
 minima:
   social_links:
