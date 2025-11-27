@@ -45,9 +45,9 @@ After each trial, a Bayesian update was performed on the parameters ($$\mu$$ and
 
 ## Thompson Sampling for classification
 
-What if we've built a classification machine learning model to predict compound activity (Active=1, Inactive=0), but we're not able to exhaustatively screen the entire library, can we use Thompson Sampling to find active compounds from our library? We can no longer model our reward distributions using the Normal distribution, as our activity labels are just 0 or 1, and we can't have values greater than 1 or less than 0. Instead we need to use the [Beta Distribution](https://en.wikipedia.org/wiki/Beta_distribution).
+What if we've built a classification machine learning model to predict compound activity (Active=1, Inactive=0), but we're not able to exhaustatively screen the entire library, can we use Thompson Sampling to find active compounds from our library? We can no longer model our reward distributions using the Normal distribution, as our activity labels are just 0 or 1 and we can't have values greater than 1 or less than 0. Instead we need to use the [Beta Distribution](https://en.wikipedia.org/wiki/Beta_distribution).
 
-The underlying event when scoring each compound is a [Bernoulli trial](https://en.wikipedia.org/wiki/Bernoulli_trial), returning either a success (1) or a failure (0), so we can use the Bernoulli distribution to model the probability the compound containing the building block is active with probability $$p$$. For the Bayesian statistics required for Thompson Samping, we need to model the uncertainty about $$p$$. The Beta distribution is the **conjugate prior probability distribution** for the Bernoulli distribution, making it the perfect choice to model the uncertainty about $$p$$. The Beta distribution is a family of continuous probability distributions defined between 0 and 1, defined by two parameters: alpha ($\alpha$) and beta ($\beta$). Alpha is related to the number of successes (active compounds), and beta to the number of failures (inactive compounds) in the Bernoulli trials.
+The underlying event when scoring each compound is a [Bernoulli trial](https://en.wikipedia.org/wiki/Bernoulli_trial), returning either a success (1) or a failure (0), so we can use the Bernoulli distribution to model the probability the compound containing the building block is active with probability $$p$$. For the Bayesian statistics required for Thompson Samping, we need to model the uncertainty about $$p$$. The Beta distribution is the **conjugate prior probability distribution** for the Bernoulli distribution, making it the perfect choice to model the uncertainty about $$p$$. The Beta distribution is a family of continuous probability distributions defined between 0 and 1, defined by two parameters: alpha ($$\alpha$$) and beta ($$\beta$$). Alpha is related to the number of successes (active compounds), and beta to the number of failures (inactive compounds) in the Bernoulli trials.
 
 Traditionally, $$\alpha$$ is updated by adding 1 for a success, and $$\beta$$ is updated by adding 1 for a failure. However, since a classification ML model provides a probability prediction ($$P_{\text{pred}}$$), we can use a more informative soft-update approach: we sum $$P_{\text{pred}}$$ for $$\alpha$$ (representing partial success evidence), and sum $$1 - P_{\text{pred}}$$ for $$\beta$$ (representing partial failure evidence).
 
@@ -474,7 +474,7 @@ def read_smi_file(file_path: Path) -> list[str]:
 
 ## Running the Thompson Sampling experiment
 
-Now we run the experiment. Initially 0.3% of the library is sampled to create the starting distributions, then a further 1% of the library is scored during the Thompson Sampling.
+Now we run the experiment. Initially 0.3% of the library is sampled to create the starting distributions, then a further 1% of the library is scored during the Thompson Sampling. During the Thompson Sampling here, sampled compounds are scored using the ML model in batches to improve performance, with the belief distributions updated after every batch. It is possible to score each compound individually and update tthe belief distributions each time, but this will be slower.
 
 ```python
 # herg_dataset_cai.csv contains columns "smiles" and "activity"
@@ -518,7 +518,7 @@ ts_end = time.time()
     
 ![png](/images/ts-for-classification/TS-for-classification_12_0.png)
 
-The mean score for the original random sample is about 0.32, the mean of the library. As we would expect, random sampling did return some active compounds. As the Thompson Sampling progresses, the mean score slowly increases until the majority of compounds being score are active. By about batch 15, the Thompson Sampling has converged on a high scoring compound.
+The mean score for the original random sample is about 0.32, the mean of the library. As we would expect, the initial random sampling did return some active compounds. As the Thompson Sampling progresses, the mean score slowly increases until the majority of compounds being scored are active. By about batch 15, the Thompson Sampling has converged on a few high scoring compounds.
 
 ## Comparing to full library enumeration
 
@@ -620,7 +620,7 @@ log.info(
     [2025-11-26 19:18:17,192] INFO: Full library enumeration and scoring took 37.6 minutes
     [2025-11-26 19:18:17,192] INFO: Thompson Sampling was 35.9 times faster than full enumeration
 
-* Due to convergence, the Thompson Sampling involved scoring only 0.8% of the library, even with this quick scoring function, it was still 36 times faster than full enumeration. With a slower scoring function, you would expect this improvement to be even larger.
-* The library is 2% actives, of the 10,000 compounds from Thompson Sampling (excluding the random sample for initialization) 49% were actives, a significant increase (a random sample of 1.3% of the library would expect 2% actives).
+* Due to convergence (sampling of duplicate compounds), the Thompson Sampling involved scoring only 0.8% of the library, even with this quick scoring function, it was still 36 times faster than full enumeration. With a slower scoring function, you would expect this improvement to be even larger.
+* The library is 2% actives. Of the roughly 5,000 compounds from Thompson Sampling (excluding the random sample for initialization) 49% were actives, a significant increase (a random sample of 0.8% of the library would expect 2% actives).
 * Thompson Sampling found the top scoring compound from the library, 4 of the top 10, 24 of the top 50, and 51 of the top 100. It discovered 2,401 of the total 20,031 active compounds. To discover the same number of active using random sampling, we would expect to have to score 12% of the library.
 * The average score of the top 100 compounds from Thompson Sampling is 0.66, only slightly lower than the average score of the top 100 compounds in the library (0.68).
