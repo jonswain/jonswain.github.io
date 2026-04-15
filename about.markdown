@@ -6,7 +6,7 @@ permalink: /about/
 
 ![A man standing in front of a volcano in Aotearoa New Zealand](/images/taranaki.jpg){:class="img-responsive"}
 
-My name is Jon Swain. I'm a data scientist and cheminformatician based in Tāmaki Makaurau, Aotearoa (Auckland, New Zealand). I completed my undergraduate degree at University College, London, with a year abroad at the University of Toronto. I then went on to complete my PhD with Professor Chris Hunter at the University of Cambridge before moving to Aotearoa to complete a postdoc with Distinguished Professor Dame Margaret Brimble. After a brief return to the UK, working at Vernalis Research near Cambridge, I returned to Aotearoa. I currently work as a contractor, specialising in applying AI and ML to drug discovery projects.
+My name is Jon Swain. I'm a data scientist and cheminformatician based in Tāmaki Makaurau, Aotearoa (Auckland, New Zealand). I completed my undergraduate degree at University College, London, with a year abroad at the University of Toronto. I then went on to complete my PhD with Professor Chris Hunter at the University of Cambridge before moving to Aotearoa to complete a postdoc with Distinguished Professor Dame Margaret Brimble. After a brief return to the UK, working at Vernalis Research near Cambridge, I returned to Aotearoa. [I currently work as a contractor, specialising in applying AI and ML to drug discovery projects](https://cambridgecheminformatics.com).
 
 Outside of my work in data science and cheminformatics, I spend most of my time outside, climbing, hiking, or rowing.
 
