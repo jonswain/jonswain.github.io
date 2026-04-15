@@ -527,6 +527,7 @@ For the regression dataset, the Random Forest model performed statistically sign
 The classification dataset (BSEP, 807 entries) is much smaller than the regression dataset (LogS, 2,173 entries). This might suggest that Chemprop-RF models are particularly effective for low-data problems, where there isn't enough data to train a high-performing Feed-Forward Neural Network (FFN) alone.
 
 ```python
+# Adapted from https://github.com/PatWalters/practical_cheminformatics_posts/blob/main/adme_comparison/
 def run_anova(df_in: pd.DataFrame, col: str) -> float:
     """Run one-way ANOVA on model performance."""
     res_list = []

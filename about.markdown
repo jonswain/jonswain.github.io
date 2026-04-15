@@ -12,6 +12,10 @@ Outside of my work in data science and cheminformatics, I spend most of my time 
 
 ---
 
+All original code on this blog is provided under the MIT License. You are free to use, modify, and distribute it for any purpose. If you use it, a link back to the post is appreciated but not required. For code adapted from other open-source projects, please see the respective citations in the post.
+
+---
+
 This website was built using the Minima Jekyll theme. The code is available on [my github](https://github.com/jonswain). You can find out more info about customizing your Jekyll theme, as well as basic Jekyll usage documentation at [jekyllrb.com](https://jekyllrb.com/)
 
 You can find the source code for Minima at GitHub:
