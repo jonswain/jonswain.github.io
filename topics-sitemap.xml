@@ -1,0 +1,14 @@
+---
+layout: null
+permalink: /topics-sitemap.xml
+---
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  {%- assign topic_pages = site.pages | where_exp: "p", "p.url contains '/topics/'" -%}
+  {%- for p in topic_pages -%}
+  <url>
+    <loc>{{ p.url | absolute_url }}</loc>
+    <lastmod>{{ site.time | date_to_xmlschema }}</lastmod>
+  </url>
+  {%- endfor -%}
+</urlset>

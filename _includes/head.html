@@ -4,6 +4,38 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   {%- seo -%}
+  {%- if page.layout == "post" -%}
+  {%- assign social_image = page.social_image | default: page.image -%}
+  {%- if social_image and social_image != "" -%}
+  <meta property="og:image" content="{{ social_image | absolute_url }}">
+  <meta property="twitter:image" content="{{ social_image | absolute_url }}">
+  <meta name="twitter:card" content="summary_large_image">
+  {%- endif -%}
+
+  {%- assign jsonld_author = page.author | default: site.title -%}
+  {%- assign jsonld_desc = page.description | default: site.description -%}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "headline": {{ page.title | jsonify }},
+      "description": {{ jsonld_desc | strip | jsonify }},
+      "datePublished": {{ page.date | date_to_xmlschema | jsonify }},
+      "dateModified": {{ page.modified_date | default: page.date | date_to_xmlschema | jsonify }},
+      "author": {
+        "@type": "Person",
+        "name": {{ jsonld_author | jsonify }}
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": {{ page.url | absolute_url | jsonify }}
+      }
+      {%- if social_image and social_image != "" -%},
+      "image": {{ social_image | absolute_url | jsonify }}
+      {%- endif -%}
+    }
+  </script>
+  {%- endif -%}
   <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
   {%- feed_meta -%}
   {%- if jekyll.environment == 'production' and site.google_analytics -%}

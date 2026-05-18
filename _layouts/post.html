@@ -4,6 +4,7 @@ layout: base
 <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
+    {%- capture reading_time -%}{%- include reading_time.html content=page.content -%}{%- endcapture -%}
     <h1 class="post-title p-name" itemprop="name headline">{{ page.title | escape }}</h1>
     <p class="post-meta">
       {%- assign date_format = site.minima.date_format | default: "%b %-d, %Y" -%}
@@ -17,13 +18,13 @@ layout: base
         {{ mdate | date: date_format }}
       </time>
       {%- endif -%}
-      {%- if page.author -%}
-      • {% for author in page.author %}
+      {% if page.author %}
+      &nbsp;• {% for author in page.author %}
       <span itemprop="author" itemscope itemtype="http://schema.org/Person">
         <span class="p-author h-card" itemprop="name">{{ author }}</span></span>
       {%- if forloop.last == false %}, {% endif -%}
       {% endfor %}
-      {%- endif -%}
+      {% endif %}&nbsp;• {{ reading_time | strip }} min read
     </p>
 
     {%- if page.series and page.series_order -%}
@@ -31,7 +32,7 @@ layout: base
     {%- assign other_posts = series_posts | where_exp: "s_post", "s_post.url != page.url" -%}
     {%- if other_posts.size > 0 -%}
     <nav class="post-series-nav" aria-label="Series navigation">
-      <h2>Other Posts in This Series</h2>
+      <h2>Other Posts in This Series:</h2>
       <ul>
         {%- for s_post in series_posts -%}
         {%- if s_post.url != page.url -%}
@@ -48,13 +49,66 @@ layout: base
     {{ content }}
   </div>
 
-  {%- if site.disqus.shortname -%}
-  {%- include disqus_comments.html -%}
-  {%- endif -%}
+  {%- assign shown_related = 0 -%}
+  {%- assign post_count = site.posts | size -%}
+  {%- assign related_offset = page.date | date: "%s" | modulo: post_count -%}
+  {%- capture related_markup -%}
+  {%- for candidate in site.posts offset: related_offset -%}
+  {%- if candidate.url != page.url and shown_related < 3 -%} {%- assign has_shared_category=false -%} {%- for category
+    in page.categories -%} {%- if candidate.categories contains category -%} {%- assign has_shared_category=true -%} {%-
+    break -%} {%- endif -%} {%- endfor -%} {%- if has_shared_category -%} {%- assign shown_related=shown_related | plus:
+    1 -%} <li>
+    <a href="{{ candidate.url | relative_url }}">{{ candidate.title | escape }}</a>
+    </li>
+    {%- endif -%}
+    {%- endif -%}
+    {%- endfor -%}
 
-  <footer class="post-footer">
-    <p>Code snippets are licensed under the MIT License unless otherwise noted.</p>
-  </footer>
+    {%- if shown_related < 3 and related_offset> 0 -%}
+      {%- for candidate in site.posts limit: related_offset -%}
+      {%- if candidate.url != page.url and shown_related < 3 -%} {%- assign has_shared_category=false -%} {%- for
+        category in page.categories -%} {%- if candidate.categories contains category -%} {%- assign
+        has_shared_category=true -%} {%- break -%} {%- endif -%} {%- endfor -%} {%- if has_shared_category -%} {%-
+        assign shown_related=shown_related | plus: 1 -%} <li>
+        <a href="{{ candidate.url | relative_url }}">{{ candidate.title | escape }}</a>
+        </li>
+        {%- endif -%}
+        {%- endif -%}
+        {%- endfor -%}
+        {%- endif -%}
+        {%- endcapture -%}
 
-  <a class="u-url" href="{{ page.url | relative_url }}" hidden></a>
+        {%- if shown_related > 0 -%}
+        <section class="related-posts" aria-label="Related posts">
+          <h2>Related Posts</h2>
+          <ul>
+            {{ related_markup }}
+          </ul>
+        </section>
+        {%- endif -%}
+
+        <section class="post-share" aria-label="Share this post">
+          <h2>Share This Post</h2>
+          {%- assign share_url_escaped = page.url | absolute_url | uri_escape -%}
+          <div class="post-share-actions">
+            <a class="share-btn" target="_blank" rel="noopener"
+              href="https://x.com/intent/tweet?text={{ page.title | uri_escape }}&url={{ page.url | absolute_url | uri_escape }}">X</a>
+            <a class="share-btn" target="_blank" rel="noopener"
+              href="https://www.linkedin.com/sharing/share-offsite/?url={{ page.url | absolute_url | uri_escape }}">LinkedIn</a>
+            <a class="share-btn"
+              href="mailto:?subject={{ page.title | uri_escape }}&body={{ 'Thought%20you%20might%20be%20interested%20in%20this%20blog%20post%3A%0A%0A' | append: share_url_escaped }}">Email</a>
+            <button type="button" class="share-btn copy-link-btn" data-url="{{ page.url | absolute_url }}">Copy
+              Link</button>
+          </div>
+        </section>
+
+        {%- if site.disqus.shortname -%}
+        {%- include disqus_comments.html -%}
+        {%- endif -%}
+
+        <footer class="post-footer">
+          <p>Code snippets are licensed under the MIT License unless otherwise noted.</p>
+        </footer>
+
+        <a class="u-url" href="{{ page.url | relative_url }}" hidden></a>
 </article>
