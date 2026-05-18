@@ -1,21 +1,23 @@
 ---
 layout: post
-title: "Working with large virtual chemical libraries: Part 3 - Thompson Sampling for classification"
+title: "Working with Large Virtual Chemical Libraries: Part 3 - Thompson Sampling for Classification"
 date: 2025-11-26 17:00:00 +1300
+permalink: /2025/11/26/ultra-large-libraries-part-3-thompson-sampling-classification/
+description: "Extending a virtual library series with Thompson sampling for classification-based compound discovery."
 categories:
-    - AI
-    - cheminformatics 
-    - data science 
-    - machine learning
-    - Thompson Sampling
-    - ultra-large libraries
+    - ai
+    - cheminformatics
+    - data-science
+    - machine-learning
+    - thompson-sampling
+    - ultra-large-libraries
 ---
 
 Only about 18 months after I wrote the first one, this is part 3 of a three post series on working with large chemical libraries. The notebook used to create this post and all the files can be found in this [github repo](https://github.com/jonswain/TS-for-classification).
 
-The first post in this series on active learning can be [found here](https://jonswain.github.io/active%20learning/ai/cheminformatics/data%20science/machine%20learning/ultra-large%20libraries/2024/05/18/ultra-large-libraries-part-1.html).
+The first post in this series on active learning can be [found here]({% post_url 2024-05-18-ultra-large-libraries-part-1 %}).
 
-The second post in this series on genetic algorithms can be [found here](https://jonswain.github.io/ai/cheminformatics/data%20science/genetic%20algorithms/ultra-large%20libraries/2025/01/02/ultra-large-libraries-part-2.html).
+The second post in this series on genetic algorithms can be [found here]({% post_url 2025-01-02-ultra-large-libraries-part-2 %}).
 
 ---
 
@@ -45,7 +47,7 @@ After each trial, a Bayesian update was performed on the parameters ($$\mu$$ and
 
 ## Thompson Sampling for classification
 
-What if we've built a classification machine learning model to predict compound activity (Active=1, Inactive=0), but we're not able to exhaustatively screen the entire library, can we use Thompson Sampling to find active compounds from our library? We can no longer model our reward distributions using the Normal distribution, as our activity labels are just 0 or 1 and we can't have values greater than 1 or less than 0. Instead we need to use the [Beta Distribution](https://en.wikipedia.org/wiki/Beta_distribution).
+What if we've built a classification machine learning model to predict compound activity (Active=1, Inactive=0), but we're not able to exhaustively screen the entire library, can we use Thompson Sampling to find active compounds from our library? We can no longer model our reward distributions using the Normal distribution, as our activity labels are just 0 or 1 and we can't have values greater than 1 or less than 0. Instead we need to use the [Beta Distribution](https://en.wikipedia.org/wiki/Beta_distribution).
 
 The underlying event when scoring each compound is a [Bernoulli trial](https://en.wikipedia.org/wiki/Bernoulli_trial), returning either a success (1) or a failure (0), so we can use the Bernoulli distribution to model the probability the compound containing the building block is active with probability $$p$$. For the Bayesian statistics required for Thompson Samping, we need to model the uncertainty about $$p$$. The Beta distribution is the **conjugate prior probability distribution** for the Bernoulli distribution, making it the perfect choice to model the uncertainty about $$p$$. The Beta distribution is a family of continuous probability distributions defined between 0 and 1, defined by two parameters: alpha ($$\alpha$$) and beta ($$\beta$$). Alpha is related to the number of successes (active compounds), and beta to the number of failures (inactive compounds) in the Bernoulli trials.
 

@@ -1,10 +1,12 @@
 ---
 layout: post
-title:  "I want to become a data scientist, but I have no idea where to start..."
+title:  "I Want to Become a Data Scientist, but I Have No Idea Where to Start..."
 date:   2024-05-05 20:04:00 +0100
-categories: 
-    - data science 
-    - cheminformatics 
+permalink: /2024/05/05/become-a-data-scientist-starting-guide/
+description: "A practical guide for scientists transitioning into data science, with learning paths, tools, and mindset advice."
+categories:
+    - data-science
+    - cheminformatics
     - training
 ---
 

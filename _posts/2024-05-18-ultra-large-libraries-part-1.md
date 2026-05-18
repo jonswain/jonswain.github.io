@@ -1,14 +1,16 @@
 ---
 layout: post
-title:  "Working with large virtual chemical libraries: Part 1 - Active learning"
+title:  "Working with Large Virtual Chemical Libraries: Part 1 - Active Learning"
 date:   2024-05-18 12:04:00 +0100
-categories: 
-    - active learning
-    - AI
-    - cheminformatics 
-    - data science 
-    - machine learning
-    - ultra-large libraries
+permalink: /2024/05/18/ultra-large-libraries-part-1/
+description: "How active learning can search large virtual chemical libraries efficiently when exhaustive screening is impractical."
+categories:
+    - active-learning
+    - ai
+    - cheminformatics
+    - data-science
+    - machine-learning
+    - ultra-large-libraries
 ---
 
 This is part 1 of a planned three post series on working with large chemical libraries.

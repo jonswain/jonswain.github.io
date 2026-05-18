@@ -2,6 +2,8 @@
 layout: post
 title: "Building a Traffic Reminder Widget"
 date: 2025-05-01 12:00:00 +0100
+permalink: /2025/05/01/building-a-traffic-reminder-widget/
+description: "A practical WSL-to-Windows workflow for traffic alerts using the TomTom API, Python, and toast notifications."
 categories:
   - general
 ---
@@ -34,7 +36,7 @@ from dotenv import load_dotenv
 
 ## Getting the traffic data
 
-Google maps doesn't seem to have a [completely free API](https://mapsplatform.google.com/pricing/). They do offer some free usage, but you still have to sign up and give credit card details, which is always a worry in case you accidentally go over the free limits (or accidentally leak your API key to the internet). TomTom on the other hand does have a [free API](https://www.tomtom.com/products/map-display-api/), you have to sign up and get an API key, and it comes with plenty of free requests. After signing up and getting and API key, I first created a TomTomAPI Python class, this uses the API key to make calls to the route calculation endpoint, providing the GPS coordinates for the start and end of your route, and returns the travel time.
+Google maps doesn't seem to have a [completely free API](https://mapsplatform.google.com/pricing/). They do offer some free usage, but you still have to sign up and give credit card details, which is always a worry in case you accidentally go over the free limits (or accidentally leak your API key to the internet). TomTom on the other hand does have a [free API](https://www.tomtom.com/products/map-display-api/), you have to sign up and get an API key, and it comes with plenty of free requests. After signing up and getting an API key, I first created a TomTomAPI Python class, this uses the API key to make calls to the route calculation endpoint, providing the GPS coordinates for the start and end of your route, and returns the travel time.
 
 ```python
 class TomTomAPI:
@@ -87,7 +89,7 @@ To display the notifications I used BurntToast, a Windows PowerShell module for 
 Install-Module -Name BurntToast
 ```
 
-BurntToast can be called from a PowerShell file (`.ps1`). The PowerShell file to display notifications is called `show_notitication.ps1` and is stored on my Windows disk. The `-Sound Alarm5` adds a sound to the notification and makes it last longer and `-AppLogo` gives icon beside the notification.
+BurntToast can be called from a PowerShell file (`.ps1`). The PowerShell file to display notifications is called `show_notification.ps1` and is stored on my Windows disk. The `-Sound Alarm5` adds a sound to the notification and makes it last longer and `-AppLogo` gives an icon beside the notification.
 
 ```ps1
 param(
@@ -150,7 +152,7 @@ class WindowsNotifier:
             print(f"Error: PowerShell executable or script not found. Check the paths.")
 ```
 
-This function formats the data from the TomTomAPI to be a more clear.
+This function formats the data from the TomTomAPI to be clearer.
 
 ```python
 def format_travel_time(label: str, travel_time: int | None) -> str:
@@ -175,7 +177,7 @@ def format_travel_time(label: str, travel_time: int | None) -> str:
 
 ## Storing environment variables
 
-To prevent sharing sentitive data such as my API key and home address, I stored these in a `.env` file. This also stores the paths to Windows PowerShell and the PowerShell script. Since this is working between two operating systems, the paths are slightly more complicated than usual. The PowerShell path is the path to the `powershell.exe` file on your Windows disk, from your Linux environment. This is usually something like: `/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe`. The Powershell script is in Windows format with escaped backslashes.
+To prevent sharing sensitive data such as my API key and home address, I stored these in a `.env` file. This also stores the paths to Windows PowerShell and the PowerShell script. Since this is working between two operating systems, the paths are slightly more complicated than usual. The PowerShell path is the path to the `powershell.exe` file on your Windows disk, from your Linux environment. This is usually something like: `/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe`. The PowerShell script is in Windows format with escaped backslashes.
 
 ```env
 API_KEY = "your_api_key"

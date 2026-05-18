@@ -1,13 +1,15 @@
 ---
 layout: post
-title: "Drug Repurposing using Artificial Intelligence"
+title: "Drug Repurposing Using Artificial Intelligence"
 date: 2025-05-03 12:00:00 +0100
+permalink: /2025/05/03/drug-repurposing-using-artificial-intelligence/
+description: "An overview of AI-driven drug repurposing, from foundational concepts to practical modeling workflows."
 categories:
-  - AI
-  - cheminformatics
-  - data science
-  - drug repurposing
-  - machine learning
+    - ai
+    - cheminformatics
+    - data-science
+    - drug-repurposing
+    - machine-learning
 ---
 
 An unwelcome cyclone may have cancelled my hiking plans, but it gave me the opportunity to delve into the fascinating world of drug repurposing. This blog post explores how identifying new uses for existing drugs can dramatically accelerate and reduce the cost of bringing vital treatments to patients, and how recent advances in machine learning can further streamline this process.

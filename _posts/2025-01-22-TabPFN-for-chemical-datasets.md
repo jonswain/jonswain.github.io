@@ -1,12 +1,14 @@
 ---
 layout: post
-title:  "TabPFN for chemical datasets"
+title:  "TabPFN for Chemical Datasets"
 date:   2025-01-22 12:00:00 +0100
-categories: 
-    - AI
-    - cheminformatics 
-    - data science 
-    - machine learning
+permalink: /2025/01/22/tabpfn-for-chemical-datasets/
+description: "Evaluating TabPFN on cheminformatics datasets and comparing its performance on molecular property tasks."
+categories:
+    - ai
+    - cheminformatics
+    - data-science
+    - machine-learning
 ---
 
 Deep Learning models have traditionally performed well on unstructured data such as text and images, but poorly on structured tabular data, and are usually outperformed by Gradient Boosted Decision Trees (GBDTs) on tabular chemical data. TabPFN (Tabular Prior-data Fitted Network) is a transformer-based foundation model for tabular data, pre-trained on millions of synthetic datasets to solve supervised learning tasks, with state-of-the-art performance on benchmarks. But does it work for cheminformatics?

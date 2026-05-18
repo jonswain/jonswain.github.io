@@ -2,18 +2,20 @@
 layout: post
 title: "Chemprop-RF: A Hybrid Approach to Chemical Property Prediction"
 date: 2025-09-12 12:00:00 +0100
+permalink: /2025/09/12/chemprop-rf-hybrid-chemical-property-prediction/
+description: "Testing whether Chemprop embeddings plus random forests can outperform standalone Chemprop and fingerprint baselines."
 categories:
-  - AI
-  - cheminformatics
-  - data science
-  - machine learning
+    - ai
+    - cheminformatics
+    - data-science
+    - machine-learning
 ---
 
 Can we combine d-MPNNs and Random Forests to outperform each of them individually?
 
 ---
 
-Whilst neural networks (**NNs**) have done amazing things with unstructured data such as text and images, they've traditionally been outperformed on tabular data by Gradient-Boosted Decision Trees (**GBDTs**), although recent advances such as [TabPFN](https://github.com/PriorLabs/TabPFN) and [TabICL](https://github.com/soda-inria/tabicl) suggest that the performance gap may have closed. [I've written a bit about TabPFN for chemical datasets here](https://jonswain.github.io/ai/cheminformatics/data%20science/machine%20learning/2025/01/22/TabPFN-for-chemical-datasets.html).
+Whilst neural networks (**NNs**) have done amazing things with unstructured data such as text and images, they've traditionally been outperformed on tabular data by Gradient-Boosted Decision Trees (**GBDTs**), although recent advances such as [TabPFN](https://github.com/PriorLabs/TabPFN) and [TabICL](https://github.com/soda-inria/tabicl) suggest that the performance gap may have closed. [I've written a bit about TabPFN for chemical datasets here]({% post_url 2025-01-22-TabPFN-for-chemical-datasets %}).
 
 One of the most popular deep learning architectures for chemical property prediction is [Chemprop](https://github.com/chemprop/chemprop), developed by researchers at MIT. A Chemprop model is made up of two NNs. The first is a directed Message Passing Neural Network (**d-MPNN**), a type of Graph Convolutional Neural Network (**GCNN**), that takes a graphical representation of a molecule and converts it to a **molecular embedding**, a vector that describes the original molecule. This molecular embedding is then put through a Feed-Forward Neural Network (**FFN**), a fully connected NN used to make the final prediction. The model is trained end-to-end, with both NNs being updated at the same time to minimise a loss function.
 

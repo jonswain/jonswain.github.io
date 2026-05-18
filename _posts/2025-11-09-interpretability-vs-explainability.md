@@ -1,19 +1,21 @@
 ---
 layout: post
-title: "Interpretability vs Explainability in Cheminformatics"
+title: "Interpretability vs. Explainability in Cheminformatics"
 date: 2025-11-09 17:00:00 +1300
+permalink: /2025/11/09/interpretability-vs-explainability-in-cheminformatics/
+description: "Clarifying interpretability versus explainability in cheminformatics and why precise terminology matters."
 categories:
-  - AI
+  - ai
   - cheminformatics
-  - data science
-  - machine learning
+  - data-science
+  - machine-learning
 ---
 
-Interpretability and explainability are different concepts in machine learning, yet many cheminformatics authors use the terms interchangably.
+Interpretability and explainability are different concepts in machine learning, yet many cheminformatics authors use the terms interchangeably.
 
 ---
 
-Something I've noticed recently in cheminformatics papers is authors using the terms **interpretable** and **explainable** interchangably. These terms have clear definitions, and misusing them risks confusing readers and not communicating research efficiently. This may sound like I'm just being pedantic, but for cheminformatics to become a mature field of research alongside machine learning, we need to demand high standards and statistical rigour in our research and communication.
+Something I've noticed recently in cheminformatics papers is authors using the terms **interpretable** and **explainable** interchangeably. These terms have clear definitions, and misusing them risks confusing readers and not communicating research efficiently. This may sound like I'm just being pedantic, but for cheminformatics to become a mature field of research alongside machine learning, we need to demand high standards and statistical rigour in our research and communication.
 
 To illustrate this, I've selected a few quotes from a paper I read recently, [Improving Machine Learning Classification Predictions through SHAP and Features Analysis Interpretation by Pinzi, et al.](https://doi.org/10.1021/acs.jcim.5c02015) I don't want to single out one paper, as this is a broader problem in cheminformatics literature (see [here](https://jcheminf.biomedcentral.com/articles/10.1186/s13321-021-00519-x), [here](https://pubs.acs.org/doi/10.1021/acs.jcim.8b00825), and [here](https://patwalters.github.io/practicalcheminformatics/jupyter/ml/interpretability/2021/06/03/interpretable.html)) and this is just one example which is an otherwise interesting paper. I also understand that for many researchers English is not a first language, which adds additional difficulties.
 
@@ -35,7 +37,7 @@ I can see where the confusion comes from. Interpretable has a colloquial meaning
 
 ### Interpretability
 
-Interpretability is *how* predictions are made. it allows humans to understand the internal mechanics of a machine learning model. The goal is transparency in the model's design, parameters, and workings. Interpretability is associated with inherently simple models like linear regression or decision trees. A simple decision tree is interpretable because you can literally follow its rules to see how it made a decision.
+Interpretability is *how* predictions are made. It allows humans to understand the internal mechanics of a machine learning model. The goal is transparency in the model's design, parameters, and workings. Interpretability is associated with inherently simple models like linear regression or decision trees. A simple decision tree is interpretable because you can literally follow its rules to see how it made a decision.
 
 ### Explainability
 
@@ -52,11 +54,11 @@ Explainability is *why* predictions are made. It refers to the ability to descri
 | Scope | Typically global (understanding the model's behavior across the entire dataset). | Typically local (understanding a single prediction/instance). |
 | Examples | N/A (It's a model property, not a method.) | SHAP, LIME. |
 
-*Note: Whilst he definitions above are the most widely used and often preferred for precision, they are not universally accepted as a formal mathematical or technical definition, and there is stil some ongoing debate. Some view interpretability as a broad term to describe any effort to make a model understandable, including the results of post-hoc explanation techniques like SHAP or LIME. They see explainability as a type or measure of interpretability. The most common criticism is the lack of formal metrics for quantifying interpretability and explainability, since the terms rely on human understanding, which is subjective. There is also some debate over whether post-hoc xAI methods such as SHAP provide a genuine explanation of the model's true decision process, or merely a plausible, user-friendly rationalization or simplified approximation of it, raising questions about the trustworthiness of the explanation itself.*
+*Note: Whilst the definitions above are the most widely used and often preferred for precision, they are not universally accepted as a formal mathematical or technical definition, and there is still some ongoing debate. Some view interpretability as a broad term to describe any effort to make a model understandable, including the results of post-hoc explanation techniques like SHAP or LIME. They see explainability as a type or measure of interpretability. The most common criticism is the lack of formal metrics for quantifying interpretability and explainability, since the terms rely on human understanding, which is subjective. There is also some debate over whether post-hoc xAI methods such as SHAP provide a genuine explanation of the model's true decision process, or merely a plausible, user-friendly rationalization or simplified approximation of it, raising questions about the trustworthiness of the explanation itself.*
 
 ## Interpretability in Chemical Representations
 
-Interpretability is often used to describe and compare different chemical representations (embeddings) in cheminformatics. For example, structural keys such as the MACCS key are inherently interpretable, as each bit position represents a specific substructure in a molecule. Hashed fingerprints such as ECPFs are less interpretable due to bit collisions, though the specific substructures that contibute to a particular bit can be stored in a bit info map during calculation. Global calculated descriptors and learned representations from graph convolutional neural networks can be significantly less interpretable, as it is often very difficult to determine the effect of specific substructures on the values.
+Interpretability is often used to describe and compare different chemical representations (embeddings) in cheminformatics. For example, structural keys such as the MACCS key are inherently interpretable, as each bit position represents a specific substructure in a molecule. Hashed fingerprints such as ECPFs are less interpretable due to bit collisions, though the specific substructures that contribute to a particular bit can be stored in a bit info map during calculation. Global calculated descriptors and learned representations from graph convolutional neural networks can be significantly less interpretable, as it is often very difficult to determine the effect of specific substructures on the values.
 
 The confusion comes from combining an interpretable molecular representation with an explainable AI technique to understand a prediction. For example using SHAP to determine the contribution of each bit position in a MACCS key towards a machine learning prediction allows us to determine substructures that contribute to the prediction.
 

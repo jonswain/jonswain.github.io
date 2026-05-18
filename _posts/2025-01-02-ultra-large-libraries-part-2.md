@@ -1,19 +1,21 @@
 ---
 layout: post
-title:  "Working with large virtual chemical libraries: Part 2 - Genetic algorithms"
+title:  "Working with Large Virtual Chemical Libraries: Part 2 - Genetic Algorithms"
 date:   2025-01-02 12:00:00 +0100
-categories: 
-    - AI
-    - cheminformatics 
-    - data science 
-    - genetic algorithms
-    - ultra-large libraries
+permalink: /2025/01/02/ultra-large-libraries-part-2/
+description: "Using genetic algorithms to search combinatorial chemical libraries without exhaustive enumeration."
+categories:
+    - ai
+    - cheminformatics
+    - data-science
+    - genetic-algorithms
+    - ultra-large-libraries
 ---
 
 This is part 2 of a a planned three post series on working with large chemical libraries.
 The notebook used to create this post, and all the files can be found in [this github repo](https://github.com/jonswain/ga-for-ul-libraries).
 
-The first post in this series on active learning can be [found here](https://jonswain.github.io/active%20learning/ai/cheminformatics/data%20science/machine%20learning/ultra-large%20libraries/2024/05/18/ultra-large-libraries-part-1.html).
+The first post in this series on active learning can be [found here]({% post_url 2024-05-18-ultra-large-libraries-part-1 %}).
 
 ---
 

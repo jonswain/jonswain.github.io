@@ -10,6 +10,8 @@ My name is Jon Swain. I'm a data scientist and cheminformatician based in Tāmak
 
 Outside of my work in data science and cheminformatics, I spend most of my time outside, climbing, hiking, or rowing.
 
+If you would like to discuss a project, collaborate, or ask about a post, please reach out by email or on LinkedIn.
+
 ---
 
 All original code on this blog is provided under the MIT License. You are free to use, modify, and distribute it for any purpose. If you use it, a link back to the post is appreciated but not required. For code adapted from other open-source projects, please see the respective citations in the post.
