@@ -1,5 +1,5 @@
 <footer class="site-footer h-card">
-  <data class="u-url" href="{{ "/" | relative_url }}"></data>
+  <data class="u-url" href="{{ " /" | relative_url }}"></data>
 
   <div class="wrapper">
 
@@ -12,21 +12,21 @@
                 <use xlink:href="{{ 'assets/minima-social-icons.svg#rss' | relative_url }}"></use>
               </svg><span>Subscribe</span>
             </a>
-          </div>    
           </p>
-          <div class="social-links", >
-            {%- include social.html -%}
-      </div>
-      {%- if site.author %}
+        </div>
+        <div class="social-links">
+          {%- include social.html -%}
+        </div>
+        {%- if site.author %}
         <ul class="contact-list">
           {% if site.author.name -%}
-            <li class="p-name">{{ site.author.name | escape }}</li>
+          <li class="p-name">{{ site.author.name | escape }}</li>
           {% endif -%}
           {% if site.author.email -%}
-            <li><a class="u-email" href="mailto:{{ site.author.email }}">{{ site.author.email }}</a></li>
+          <li><a class="u-email" href="mailto:{{ site.author.email }}">{{ site.author.email }}</a></li>
           {%- endif %}
         </ul>
-      {%- endif %}
+        {%- endif %}
       </div>
       <div class="footer-col">
         <p>{{ site.description | escape }}</p>
