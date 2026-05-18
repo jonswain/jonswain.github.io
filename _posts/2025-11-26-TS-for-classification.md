@@ -2,8 +2,12 @@
 layout: post
 title: "Working with Large Virtual Chemical Libraries: Part 3 - Thompson Sampling for Classification"
 date: 2025-11-26 17:00:00 +1300
-permalink: /2025/11/26/ultra-large-libraries-part-3-thompson-sampling-classification/
+permalink: /ultra-large-libraries-part-3-thompson-sampling-classification/
+redirect_from:
+    - /ai/cheminformatics/data%20science/machine%20learning/thompson%20sampling/ultra-large%20libraries/2025/11/26/TS-for-classification.html
 description: "Extending a virtual library series with Thompson sampling for classification-based compound discovery."
+series: ultra-large-libraries
+series_order: 3
 categories:
     - ai
     - cheminformatics
@@ -14,10 +18,6 @@ categories:
 ---
 
 Only about 18 months after I wrote the first one, this is part 3 of a three post series on working with large chemical libraries. The notebook used to create this post and all the files can be found in this [github repo](https://github.com/jonswain/TS-for-classification).
-
-The first post in this series on active learning can be [found here]({% post_url 2024-05-18-ultra-large-libraries-part-1 %}).
-
-The second post in this series on genetic algorithms can be [found here]({% post_url 2025-01-02-ultra-large-libraries-part-2 %}).
 
 ---
 

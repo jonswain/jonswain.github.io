@@ -2,7 +2,9 @@
 layout: post
 title: "Interpretability vs. Explainability in Cheminformatics"
 date: 2025-11-09 17:00:00 +1300
-permalink: /2025/11/09/interpretability-vs-explainability-in-cheminformatics/
+permalink: /interpretability-vs-explainability-in-cheminformatics/
+redirect_from:
+    - ai/cheminformatics/data%20science/machine%20learning/2025/11/09/interpretability-vs-explainability.html
 description: "Clarifying interpretability versus explainability in cheminformatics and why precise terminology matters."
 categories:
   - ai

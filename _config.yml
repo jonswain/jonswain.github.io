@@ -1,5 +1,6 @@
 title: Jon Swain
 subtitle: Data Scientist and Cheminformatician
+tagline: Data Scientist and Cheminformatician
 email: jonswain123@gmail.com
 description: >-
   I am a data scientist and cheminformatician, originally from the UK, but often found in Aotearoa (New Zealand). 
@@ -10,7 +11,7 @@ url: "https://jonswain.github.io"
 show_excerpts: true
 excerpt_separator: "<!--more-->"
 enable_math: true
-permalink: /:year/:month/:day/:title/
+permalink: /:title/
 
 minima:
   social_links:
@@ -22,6 +23,7 @@ theme: minima
 plugins:
   - jekyll-feed
   - jekyll-sitemap
+  - jekyll-redirect-from
   - jemoji
 
 defaults:
@@ -36,3 +38,4 @@ google_analytics: G-R6CVGR431E
 
 header_pages:
   - about.markdown
+  - topics/index.md

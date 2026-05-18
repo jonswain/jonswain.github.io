@@ -2,7 +2,9 @@
 layout: post
 title: "Drug Repurposing Using Artificial Intelligence"
 date: 2025-05-03 12:00:00 +0100
-permalink: /2025/05/03/drug-repurposing-using-artificial-intelligence/
+permalink: /drug-repurposing-using-artificial-intelligence/
+redirect_from:
+    - /ai/cheminformatics/data%20science/drug%20repurposing/machine%20learning/2025/05/03/drug-repurposing-using-ai.html
 description: "An overview of AI-driven drug repurposing, from foundational concepts to practical modeling workflows."
 categories:
     - ai

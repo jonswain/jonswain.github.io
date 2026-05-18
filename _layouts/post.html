@@ -25,6 +25,23 @@ layout: base
       {% endfor %}
       {%- endif -%}
     </p>
+
+    {%- if page.series and page.series_order -%}
+    {%- assign series_posts = site.posts | where: "series", page.series | sort: "series_order" -%}
+    {%- assign other_posts = series_posts | where_exp: "s_post", "s_post.url != page.url" -%}
+    {%- if other_posts.size > 0 -%}
+    <nav class="post-series-nav" aria-label="Series navigation">
+      <h2>Other Posts in This Series</h2>
+      <ul>
+        {%- for s_post in series_posts -%}
+        {%- if s_post.url != page.url -%}
+        <li><a href="{{ s_post.url | relative_url }}">{{ s_post.title | escape }}</a></li>
+        {%- endif -%}
+        {%- endfor -%}
+      </ul>
+    </nav>
+    {%- endif -%}
+    {%- endif -%}
   </header>
 
   <div class="post-content e-content" itemprop="articleBody">

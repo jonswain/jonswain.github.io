@@ -2,7 +2,9 @@
 layout: post
 title: "Chemprop-RF: A Hybrid Approach to Chemical Property Prediction"
 date: 2025-09-12 12:00:00 +0100
-permalink: /2025/09/12/chemprop-rf-hybrid-chemical-property-prediction/
+permalink: /chemprop-rf-hybrid-chemical-property-prediction/
+redirect_from:
+    - /ai/cheminformatics/data%20science/machine%20learning/2025/09/12/chemprop-rf.html
 description: "Testing whether Chemprop embeddings plus random forests can outperform standalone Chemprop and fingerprint baselines."
 categories:
     - ai

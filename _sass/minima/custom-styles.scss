@@ -45,3 +45,25 @@
     font-style: italic;
     color: $brand-color;
 }
+
+.post-series-nav {
+    margin: 1.5rem 0;
+    padding: 1rem 1.25rem;
+    border: 1px solid #d6d6d6;
+    border-radius: 10px;
+    background: #fafafa;
+}
+
+.post-series-nav h2 {
+    margin: 0 0 0.5rem;
+    font-size: 1rem;
+}
+
+.post-series-nav ul {
+    list-style: none;
+    margin: 0;
+}
+
+.post-content .post-list h3 {
+    margin-top: 0;
+}

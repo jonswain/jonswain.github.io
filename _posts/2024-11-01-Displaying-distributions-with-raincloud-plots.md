@@ -2,7 +2,9 @@
 layout: post
 title:  "Displaying Distributions with Raincloud Plots"
 date:   2024-11-01 12:00:00 +0100
-permalink: /2024/11/01/displaying-distributions-with-raincloud-plots/
+permalink: /displaying-distributions-with-raincloud-plots/
+redirect_from:
+    - /data%20science/visualisation/2024/11/01/Displaying-distributions-with-raincloud-plots.html
 description: "Why raincloud plots are a useful alternative for comparing complex distributions in reports and presentations."
 categories:
     - data-science
