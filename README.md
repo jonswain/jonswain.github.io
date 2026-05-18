@@ -128,7 +128,6 @@ images:
 - The active Sass entrypoint is `assets/main.scss`.
 - To prevent formatter-on-save issues with Sass files, workspace settings disable format-on-save for css/scss/sass in `.vscode/settings.json`.
 - `.prettierignore` also excludes:
-  - `assets/css/style.scss`
   - `assets/main.scss`
 
 To verify redirect pages include canonical tags to their target permalink:

@@ -14,6 +14,26 @@
     background: #fafafa;
 }
 
+.post-card-item {
+    display: grid;
+    gap: 0.65rem;
+}
+
+.post-card-image-link {
+    display: block;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #f4f4f4;
+}
+
+.post-card-image {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 420px;
+    object-fit: contain;
+}
+
 .post-summary {
     margin-bottom: 0.5rem;
 }
@@ -30,6 +50,9 @@
 
 .post-content img,
 .page-content img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
     max-width: 100%;
     height: auto;
     border-radius: 8px;
