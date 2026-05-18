@@ -42,7 +42,7 @@ layout: base
         </a>
       </h3>
       {%- if site.show_excerpts -%}
-      {%- assign has_preview = post.preview | to_s | strip -%}
+      {%- assign has_preview = post.preview | default: "" | strip -%}
       {%- if has_preview != "" -%}
       <p class="post-summary">{{ post_card_summary | strip_html | normalize_whitespace }}</p>
       {%- else -%}
