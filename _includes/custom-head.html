@@ -7,6 +7,14 @@ Placeholder to allow defining custom head, in principle, you can add anything he
 
 <script>
   document.addEventListener("DOMContentLoaded", function () {
+    async function copyText(value) {
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(value);
+        return true;
+      }
+      return false;
+    }
+
     var copyButtons = document.querySelectorAll(".copy-link-btn");
 
     copyButtons.forEach(function (button) {
@@ -15,11 +23,8 @@ Placeholder to allow defining custom head, in principle, you can add anything he
         var originalText = button.textContent;
 
         try {
-          if (navigator.clipboard && window.isSecureContext) {
-            await navigator.clipboard.writeText(url);
-          } else {
-            throw new Error("Clipboard API unavailable");
-          }
+          var copied = await copyText(url);
+          if (!copied) throw new Error("Clipboard API unavailable");
           button.textContent = "Copied";
           setTimeout(function () {
             button.textContent = originalText;
@@ -28,6 +33,111 @@ Placeholder to allow defining custom head, in principle, you can add anything he
           window.prompt("Copy this link:", url);
         }
       });
+    });
+
+    var postContent = document.querySelector(".post .post-content");
+    var progressRoot = document.getElementById("reading-progress-bar");
+    var progressText = document.getElementById("reading-progress-text");
+    var scrollTopBtn = document.getElementById("scroll-top-btn");
+
+    if (postContent && progressRoot && progressText && scrollTopBtn) {
+      var isLongPost = postContent.scrollHeight > window.innerHeight * 1.2;
+      if (!isLongPost) {
+        progressRoot.style.width = "0%";
+        scrollTopBtn.style.display = "none";
+      } else {
+        function updateReadingProgress() {
+          var start = postContent.getBoundingClientRect().top + window.scrollY;
+          var end = start + postContent.offsetHeight - window.innerHeight;
+          var raw = end > start ? (window.scrollY - start) / (end - start) : 1;
+          var clamped = Math.max(0, Math.min(1, raw));
+          var pct = Math.round(clamped * 100);
+
+          progressRoot.style.width = pct + "%";
+          progressText.textContent = pct + "%";
+
+          if (window.scrollY > 320) {
+            scrollTopBtn.classList.add("visible");
+          } else {
+            scrollTopBtn.classList.remove("visible");
+          }
+        }
+
+        window.addEventListener("scroll", updateReadingProgress, { passive: true });
+        window.addEventListener("resize", updateReadingProgress);
+        updateReadingProgress();
+
+        scrollTopBtn.addEventListener("click", function () {
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        });
+      }
+    }
+
+    var codeBlocks = document.querySelectorAll(".post-content pre");
+    codeBlocks.forEach(function (pre) {
+      if (pre.closest(".code-block")) return;
+
+      var wrapper = document.createElement("div");
+      wrapper.className = "code-block";
+      pre.parentNode.insertBefore(wrapper, pre);
+      wrapper.appendChild(pre);
+
+      var code = pre.querySelector("code");
+      var language = "Code";
+      var classSources = [pre.className, code ? code.className : ""];
+      var ancestor = pre.parentElement;
+      while (ancestor && ancestor !== document.body) {
+        classSources.push(ancestor.className || "");
+        ancestor = ancestor.parentElement;
+      }
+
+      classSources.some(function (classText) {
+        var match = classText && classText.match(/language-([a-z0-9_+-]+)/i);
+        if (match) {
+          language = match[1].replace(/[-_]/g, " ");
+          language = language.charAt(0).toUpperCase() + language.slice(1);
+          return true;
+        }
+        return false;
+      });
+
+      var languageKey = language.toLowerCase();
+      var isOutputBlock = languageKey === "plaintext" || languageKey === "text" || languageKey === "output";
+      if (isOutputBlock) {
+        wrapper.classList.add("output-block");
+        language = "Output";
+      }
+
+      var meta = document.createElement("div");
+      meta.className = "code-block-meta";
+
+      var label = document.createElement("span");
+      label.className = "code-language-label";
+      label.textContent = language;
+      meta.appendChild(label);
+
+      if (!isOutputBlock) {
+        var copyBtn = document.createElement("button");
+        copyBtn.type = "button";
+        copyBtn.className = "code-copy-btn";
+        copyBtn.textContent = "Copy";
+        copyBtn.addEventListener("click", async function () {
+          var text = code ? code.textContent : pre.textContent;
+          try {
+            var copied = await copyText(text);
+            if (!copied) throw new Error("Clipboard API unavailable");
+            copyBtn.textContent = "Copied";
+            setTimeout(function () {
+              copyBtn.textContent = "Copy";
+            }, 1200);
+          } catch (error) {
+            window.prompt("Copy this code:", text);
+          }
+        });
+        meta.appendChild(copyBtn);
+      }
+
+      wrapper.insertBefore(meta, pre);
     });
   });
 </script>
