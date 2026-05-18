@@ -8,14 +8,9 @@ permalink: /topics/genetic-algorithms/
 
 {%- if topic_posts.size > 0 -%}
 <ul class="post-list">
+  {%- assign date_format = site.minima.date_format | default: "%b %-d, %Y" -%}
   {%- for post in topic_posts -%}
-  <li>
-    {%- capture reading_time -%}{%- include reading_time.html content=post.content -%}{%- endcapture -%}
-    <span class="post-meta">{{ post.date | date: "%b %-d, %Y" }} • {{ reading_time | strip }} min read</span>
-    <h3><a class="post-link" href="{{ post.url | relative_url }}">{{ post.title | escape }}</a></h3>
-    <p class="post-summary">{{ post.excerpt | strip_html | normalize_whitespace | truncate: 240 }}</p>
-    <p><a class="read-more" href="{{ post.url | relative_url }}">Read article</a></p>
-  </li>
+  {%- include post_card.html post=post date_format=date_format show_summary=site.show_excerpts -%}
   {%- endfor -%}
 </ul>
 {%- else -%}

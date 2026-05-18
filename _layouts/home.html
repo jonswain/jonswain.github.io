@@ -24,33 +24,7 @@ layout: base
   <ul class="post-list">
     {%- assign date_format = site.minima.date_format | default: "%b %-d, %Y" -%}
     {%- for post in posts -%}
-    {%- assign post_card_image = post.image.card -%}
-    {%- assign post_image_alt = post.image.alt | default: post.title -%}
-    {%- assign post_card_summary = post.preview | default: post.excerpt -%}
-    {%- capture reading_time -%}{%- include reading_time.html content=post.content -%}{%- endcapture -%}
-    <li class="post-card-item">
-      {%- if post_card_image and post_card_image != "" -%}
-      <a class="post-card-image-link" href="{{ post.url | relative_url }}" aria-label="Read {{ post.title | escape }}">
-        <img class="post-card-image" src="{{ post_card_image | relative_url }}" alt="{{ post_image_alt | escape }}"
-          loading="lazy" decoding="async">
-      </a>
-      {%- endif -%}
-      <span class="post-meta">{{ post.date | date: date_format }} • {{ reading_time | strip }} min read</span>
-      <h3>
-        <a class="post-link" href="{{ post.url | relative_url }}">
-          {{ post.title | escape }}
-        </a>
-      </h3>
-      {%- if site.show_excerpts -%}
-      {%- assign has_preview = post.preview | default: "" | strip -%}
-      {%- if has_preview != "" -%}
-      <p class="post-summary">{{ post_card_summary | strip_html | normalize_whitespace }}</p>
-      {%- else -%}
-      <p class="post-summary">{{ post_card_summary | strip_html | normalize_whitespace | truncate: 240 }}</p>
-      {%- endif -%}
-      <p><a class="read-more" href="{{ post.url | relative_url }}">Read article</a></p>
-      {%- endif -%}
-    </li>
+    {%- include post_card.html post=post date_format=date_format show_summary=site.show_excerpts -%}
     {%- endfor -%}
   </ul>
 
