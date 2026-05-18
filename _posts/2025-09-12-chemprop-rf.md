@@ -6,15 +6,12 @@ permalink: /chemprop-rf-hybrid-chemical-property-prediction/
 redirect_from:
     - /ai/cheminformatics/data%20science/machine%20learning/2025/09/12/chemprop-rf.html
 description: "Testing whether Chemprop embeddings plus random forests can outperform standalone Chemprop and fingerprint baselines."
+preview: "Can we combine d-MPNNs and Random Forests to outperform each of them individually?"
 categories:
     - ai
     - cheminformatics
     - data-science
     - machine-learning
----
-
-Can we combine d-MPNNs and Random Forests to outperform each of them individually?
-
 ---
 
 Whilst neural networks (**NNs**) have done amazing things with unstructured data such as text and images, they've traditionally been outperformed on tabular data by Gradient-Boosted Decision Trees (**GBDTs**), although recent advances such as [TabPFN](https://github.com/PriorLabs/TabPFN) and [TabICL](https://github.com/soda-inria/tabicl) suggest that the performance gap may have closed. [I've written a bit about TabPFN for chemical datasets here]({% post_url 2025-01-22-TabPFN-for-chemical-datasets %}).

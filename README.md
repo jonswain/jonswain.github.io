@@ -67,23 +67,69 @@ Optional keys:
 author: Jon Swain
 modified_date: 2026-01-02 12:00:00 +0000
 social_image: /images/my_post/social-preview.png
-image: /images/my_post/fallback-image.png
+preview: "Optional short teaser text"
+
+image:
+  src: /images/my_post/base-image.png
+  alt: "Optional alt text for homepage card image"
+  social: /images/my_post/social-preview.png
+  card: /images/my_post/card-preview.png
+
+# Legacy form still supported for social fallback:
+# image: /images/my_post/fallback-image.png
+
 redirect_from:
   - /old/path/to/post.html
 series: my-series
 series_order: 2
 ```
 
+### Card metadata behavior
+
+- Homepage cards only render an image when `image.card` is defined.
+- No fallback image is used for cards.
+- Homepage card summary text resolves in this order:
+  1. `preview`
+  2. `excerpt` (generated from post content)
+
 ## SEO notes
 
-Posts support an optional `social_image` front matter key for explicit share previews:
+Posts support structured image metadata and optional `social_image` for share previews:
 
 ```yaml
 social_image: /images/my_post/social-preview.png
 ```
 
-If `social_image` is omitted, the site falls back to `image` from front matter/defaults.
-If neither is present, no explicit image tags are rendered by the custom head logic.
+Social preview image fallback order in templates is:
+
+1. `social_image`
+2. `image.social`
+3. `image.card`
+4. `image.src` (or legacy `image` string)
+5. `images.defaults.social` from `_config.yml`
+6. `images.defaults.card` from `_config.yml`
+7. `site.image` (if configured)
+
+When a social image resolves, Open Graph and Twitter image tags are emitted.
+
+Global image defaults are configured in `_config.yml`:
+
+```yaml
+images:
+  defaults:
+    social: /images/taranaki.jpg
+    card: /images/taranaki.jpg
+    hero: /images/taranaki.jpg
+```
+
+## Stylesheet and formatting notes
+
+- Site CSS is linked from `/assets/main.css`.
+- The active Sass entrypoint is `assets/main.scss`.
+- To prevent formatter-on-save issues with Sass files, workspace settings disable format-on-save for css/scss/sass in `.vscode/settings.json`.
+- `.prettierignore` also excludes:
+  - `assets/css/style.scss`
+  - `assets/main.scss`
 
 To verify redirect pages include canonical tags to their target permalink:
 

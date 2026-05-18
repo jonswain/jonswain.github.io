@@ -6,6 +6,7 @@ permalink: /displaying-distributions-with-raincloud-plots/
 redirect_from:
     - /data%20science/visualisation/2024/11/01/Displaying-distributions-with-raincloud-plots.html
 description: "Why raincloud plots are a useful alternative for comparing complex distributions in reports and presentations."
+preview: "Every time I used violin plots in presentations, the feedback turned into a debate over whether they looked like sea creatures or medieval weapons. If you want a cleaner way to show your data, raincloud plots are an incredibly intuitive alternative that combines raw data points, box plots, and density curves beautifully."
 categories:
     - data-science
     - visualisation

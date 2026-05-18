@@ -6,6 +6,7 @@ permalink: /tabpfn-for-chemical-datasets/
 redirect_from:
     - /ai/cheminformatics/data%20science/machine%20learning/2025/01/22/TabPFN-for-chemical-datasets.html
 description: "Evaluating TabPFN on cheminformatics datasets and comparing its performance on molecular property tasks."
+preview: "TabPFN is a new transformer-based foundation model that claims to handle tabular data in a single, lightning-fast forward pass. I decided to put it to the test on several molecular property benchmarks to see how it holds up out of the box."
 categories:
     - ai
     - cheminformatics

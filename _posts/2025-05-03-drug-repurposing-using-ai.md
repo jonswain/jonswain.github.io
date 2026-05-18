@@ -6,6 +6,7 @@ permalink: /drug-repurposing-using-artificial-intelligence/
 redirect_from:
     - /ai/cheminformatics/data%20science/drug%20repurposing/machine%20learning/2025/05/03/drug-repurposing-using-ai.html
 description: "An overview of AI-driven drug repurposing, from foundational concepts to practical modeling workflows."
+preview: "Finding new uses for existing, approved medications is a massive shortcut in drug discovery. After bad weather ruined my weekend hiking plans, I sat down to build an open-source deep learning workflow to virtually screen clinical libraries for hidden hits."
 categories:
     - ai
     - cheminformatics

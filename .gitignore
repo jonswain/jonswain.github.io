@@ -215,10 +215,16 @@ __marimo__/
 # Streamlit
 .streamlit/secrets.toml
 
-_site
-.sass-cache
-.jekyll-cache
+# Jekyll / Ruby build artifacts
+_site/
+.sass-cache/
+.jekyll-cache/
 .jekyll-metadata
-vendor
+.bundle/
+vendor/bundle/
+
+# OS/editor files
 .DS_Store
 **/.DS_Store
+*.swp
+*.swo

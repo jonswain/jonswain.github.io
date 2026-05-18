@@ -13,6 +13,12 @@ excerpt_separator: "<!--more-->"
 enable_math: true
 permalink: /:title/
 
+images:
+  defaults:
+    social: /images/taranaki.jpg
+    card: /images/taranaki.jpg
+    hero: /images/taranaki.jpg
+
 minima:
   social_links:
     - { platform: github, user_url: "https://github.com/jonswain" }

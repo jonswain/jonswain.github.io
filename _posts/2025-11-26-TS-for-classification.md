@@ -6,6 +6,7 @@ permalink: /ultra-large-libraries-part-3-thompson-sampling-classification/
 redirect_from:
     - /ai/cheminformatics/data%20science/machine%20learning/thompson%20sampling/ultra-large%20libraries/2025/11/26/TS-for-classification.html
 description: "Extending a virtual library series with Thompson sampling for classification-based compound discovery."
+preview: "Exhaustively screening billion-compound virtual libraries would take decades, so we need smarter ways to hunt for molecules. I look at how we can adapt Thompson Sampling, a classic reinforcement learning technique, using the Beta distribution to efficiently find active compounds without breaking our computers."
 series: ultra-large-libraries
 series_order: 3
 categories:

@@ -6,7 +6,10 @@ permalink: /become-a-data-scientist-starting-guide/
 redirect_from:
     - /data%20science/cheminformatics/training/2024/05/05/I-want-to-become-a-data-scientist,-but-I-have-no-idea-where-to-start.html
 description: "A practical guide for scientists transitioning into data science, with learning paths, tools, and mindset advice."
-social_image: /images/career_change/chemistry_to_data_science.pngsocial-preview.png
+preview: "When I first started looking into retraining for data science, I felt completely lost and unguided. I wrote this post to share the exact things I wish I’d known before setting out, from picking the right Python courses to navigating bootcamps and getting that first bit of real-world experience."
+image:
+  social: /images/career_change/chemistry_to_data_science.png
+  card: /images/career_change/chemistry_to_data_science.png
 categories:
     - data-science
     - cheminformatics

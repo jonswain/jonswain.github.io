@@ -6,6 +6,7 @@ permalink: /ultra-large-libraries-part-1/
 redirect_from:
     - /active%20learning/ai/cheminformatics/data%20science/machine%20learning/ultra-large%20libraries/2024/05/18/ultra-large-libraries-part-1.html
 description: "How active learning can search large virtual chemical libraries efficiently when exhaustive screening is impractical."
+preview: "If a computational scoring function takes just one second per molecule, screening a billion-compound library would take nearly 32 years. In part one of this series, I look at how we can use active learning loops to train a machine learning model, allowing us to intelligently hunt down the highest-performing molecules without exhaustively testing the whole library."
 series: ultra-large-libraries
 series_order: 1
 categories:

@@ -1,0 +1,11 @@
+{
+    "[css]": {
+        "editor.formatOnSave": false
+    },
+    "[scss]": {
+        "editor.formatOnSave": false
+    },
+    "[sass]": {
+        "editor.formatOnSave": false
+    }
+}

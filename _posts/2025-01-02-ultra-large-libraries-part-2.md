@@ -6,6 +6,7 @@ permalink: /ultra-large-libraries-part-2/
 redirect_from:
     - /ai/cheminformatics/data%20science/genetic%20algorithms/ultra-large%20libraries/2025/01/02/ultra-large-libraries-part-2.html
 description: "Using genetic algorithms to search combinatorial chemical libraries without exhaustive enumeration."
+preview: "When a virtual library is way too massive to screen one molecule at a time, genetic algorithms offer an elegant way out. In part two of this series, I explore how biologically inspired selection can navigate massive combinatorial spaces using just building block data."
 series: ultra-large-libraries
 series_order: 2
 categories:
