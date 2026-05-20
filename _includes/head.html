@@ -4,28 +4,52 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   {%- seo -%}
+  {%- assign social_image = nil -%}
   {%- if page.layout == "post" -%}
-  {%- assign page_image_src = page.image -%}
-  {%- if page.image.src -%}
-  {%- assign page_image_src = page.image.src -%}
+  {%- assign post_first_content_image = nil -%}
+  {%- assign post_content_raw = page.content | default: "" -%}
+
+  {%- if post_content_raw contains "![" -%}
+  {%- assign markdown_image_sections = post_content_raw | split: "![" -%}
+  {%- assign markdown_image_tail = markdown_image_sections[1] -%}
+  {%- if markdown_image_tail and markdown_image_tail contains "](" -%}
+  {%- assign markdown_image_after_open = markdown_image_tail | split: "](" -%}
+  {%- assign markdown_image_candidate = markdown_image_after_open[1] | split: ")" | first | strip -%}
+  {%- assign markdown_image_candidate = markdown_image_candidate | split: " " | first | replace: "<", "" | replace: ">"
+    , "" -%} {%- if markdown_image_candidate and markdown_image_candidate !="" -%} {%- assign
+    post_first_content_image=markdown_image_candidate -%} {%- endif -%} {%- endif -%} {%- endif -%} {%- if
+    (post_first_content_image==nil or post_first_content_image=="" ) and post_content_raw contains "<img" and
+    post_content_raw contains "src=\"" -%}
+  {%- assign html_image_sources = post_content_raw | split: " src=\"" -%} {%- assign
+    html_image_candidate=html_image_sources[1] | split: "\"" | first | strip -%}
+  {%- if html_image_candidate and html_image_candidate != "" -%}
+  {%- assign post_first_content_image = html_image_candidate -%}
+  {%- endif -%}
   {%- endif -%}
 
   {%- assign social_image = page.social_image
   | default: page.image.social
   | default: page.image.card
-  | default: page_image_src
+  | default: post_first_content_image
   | default: site.images.defaults.social
   | default: site.images.defaults.card
   | default: site.image -%}
-  {%- if social_image and social_image != "" -%}
-  <meta property="og:image" content="{{ social_image | absolute_url }}">
-  <meta property="twitter:image" content="{{ social_image | absolute_url }}">
-  <meta name="twitter:card" content="summary_large_image">
+  {%- else -%}
+  {%- assign social_image = site.images.defaults.social
+  | default: site.images.defaults.card
+  | default: site.image -%}
   {%- endif -%}
 
-  {%- assign jsonld_author = page.author | default: site.title -%}
-  {%- assign jsonld_desc = page.description | default: site.description -%}
-  <script type="application/ld+json">
+  {%- if social_image and social_image != "" -%}
+  <meta property=" og:image" content="{{ social_image | absolute_url }}">
+    <meta property="twitter:image" content="{{ social_image | absolute_url }}">
+    <meta name="twitter:card" content="summary_large_image">
+    {%- endif -%}
+
+    {%- if page.layout == "post" -%}
+    {%- assign jsonld_author = page.author | default: site.title -%}
+    {%- assign jsonld_desc = page.description | default: site.description -%}
+    <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "BlogPosting",
@@ -46,34 +70,34 @@
       {%- endif -%}
     }
   </script>
-  {%- endif -%}
-  <link rel="stylesheet" href="{{ '/assets/main.css' | relative_url }}">
-  {%- feed_meta -%}
-  {%- if jekyll.environment == 'production' and site.google_analytics -%}
-  {%- include google-analytics.html -%}
-  {%- endif -%}
+    {%- endif -%}
+    <link rel="stylesheet" href="{{ '/assets/main.css' | relative_url }}">
+    {%- feed_meta -%}
+    {%- if jekyll.environment == 'production' and site.google_analytics -%}
+    {%- include google-analytics.html -%}
+    {%- endif -%}
 
-  {%- include custom-head.html -%}
+    {%- include custom-head.html -%}
 
-  {% if site.enable_math and page.layout == "post" %}
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
-  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      if (typeof renderMathInElement === "function") {
-        renderMathInElement(document.body, {
-          delimiters: [
-            { left: "$$", right: "$$", display: true },
-            { left: "$", right: "$", display: false },
-            { left: "\\(", right: "\\)", display: false },
-            { left: "\\[", right: "\\]", display: true }
-          ],
-          throwOnError: false
-        });
-      }
-    });
-  </script>
-  {% endif %}
+    {% if site.enable_math and page.layout == "post" %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        if (typeof renderMathInElement === "function") {
+          renderMathInElement(document.body, {
+            delimiters: [
+              { left: "$$", right: "$$", display: true },
+              { left: "$", right: "$", display: false },
+              { left: "\\(", right: "\\)", display: false },
+              { left: "\\[", right: "\\]", display: true }
+            ],
+            throwOnError: false
+          });
+        }
+      });
+    </script>
+    {% endif %}
 
 </head>
