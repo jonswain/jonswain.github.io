@@ -41,7 +41,8 @@
   {%- endif -%}
 
   {%- if social_image and social_image != "" -%}
-  <meta property=" og:image" content="{{ social_image | absolute_url }}">
+  <meta name=" image" property="og:image" content="{{ social_image | absolute_url }}">
+    <meta property="og:image" content="{{ social_image | absolute_url }}">
     <meta property="twitter:image" content="{{ social_image | absolute_url }}">
     <meta name="twitter:card" content="summary_large_image">
     {%- endif -%}
