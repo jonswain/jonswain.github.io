@@ -32,6 +32,11 @@ plugins:
   - jekyll-redirect-from
   - jemoji
 
+feed:
+  posts_limit: 100
+
+orcid: 0000-0003-4457-1481
+
 defaults:
   - scope:
       path: ""
@@ -39,6 +44,8 @@ defaults:
     values:
       author: Jon Swain
       image: /images/taranaki.jpg
+      license: CC BY 4.0
+      license_url: https://creativecommons.org/licenses/by/4.0/
 
 google_analytics: G-R6CVGR431E
 

@@ -14,6 +14,8 @@ If you would like to discuss a project, collaborate, or ask about a post, please
 
 ---
 
+Post text and figures on this blog are licensed under [Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/). You are free to share and adapt them for any purpose, provided you give appropriate credit and link back to the original post.
+
 All original code on this blog is provided under the MIT License. You are free to use, modify, and distribute it for any purpose. If you use it, a link back to the post is appreciated but not required. For code adapted from other open-source projects, please see the respective citations in the post.
 
 ---
