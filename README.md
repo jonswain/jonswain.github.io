@@ -16,7 +16,6 @@ jonswain.github.io/
 ├── topics/                     # Topic landing pages
 ├── scripts/
 │   └── check_redirect_canonicals.rb  # Redirect canonical QA check
-├── topics-sitemap.xml          # Topic-specific sitemap
 ├── README.md                   # Project documentation
 └── Gemfile                     # Ruby/Jekyll dependencies
 ```
@@ -66,17 +65,16 @@ Optional keys:
 ```yaml
 author: Jon Swain
 modified_date: 2026-01-02 12:00:00 +0000
-social_image: /images/my_post/social-preview.png
 preview: "Optional short teaser text"
 
+# Explicit share image. String, or a hash with `path` (share) + `card` (homepage thumbnail).
 image:
-  src: /images/my_post/base-image.png
-  alt: "Optional alt text for homepage card image"
-  social: /images/my_post/social-preview.png
+  path: /images/my_post/social-preview.png
   card: /images/my_post/card-preview.png
+  alt: "Alt text for the homepage card thumbnail"
 
-# Legacy form still supported for social fallback:
-# image: /images/my_post/fallback-image.png
+# Or just a string, used for both the share image and (via jekyll-feed) the RSS thumbnail:
+# image: /images/my_post/preview.png
 
 redirect_from:
   - /old/path/to/post.html
@@ -86,7 +84,7 @@ series_order: 2
 
 ### Card metadata behavior
 
-- Homepage cards only render an image when `image.card` is defined.
+- Homepage / topic-page cards only render a thumbnail when `image.card` is defined.
 - No fallback image is used for cards.
 - Homepage card summary text resolves in this order:
   1. `preview`
@@ -94,33 +92,23 @@ series_order: 2
 
 ## SEO notes
 
-Posts support structured image metadata and optional `social_image` for share previews:
+Page `<head>` metadata (title, description, canonical, Open Graph, JSON-LD) is produced
+by `jekyll-seo-tag`. It reads the `image:` key (a string, or a hash with `path:`) for the
+`og:image` / `twitter:image` tags.
 
-```yaml
-social_image: /images/my_post/social-preview.png
-```
+`_includes/head.html` adds a fallback for pages that do **not** set `image:`. The share
+image resolves in this order:
 
-Social preview image fallback order in templates is:
+1. `image` string / `image.path` — handled by `jekyll-seo-tag`
+2. `image.card`
+3. first image found in the post body (`![](...)` or `<img src="...">`)
+4. `/images/taranaki.jpg` (site default)
 
-1. `social_image`
-2. `image.social`
-3. `image.card`
-4. `image.src` (or legacy `image` string)
-5. `images.defaults.social` from `_config.yml`
-6. `images.defaults.card` from `_config.yml`
-7. `site.image` (if configured)
-
-When a social image resolves, Open Graph and Twitter image tags are emitted.
-
-Global image defaults are configured in `_config.yml`:
-
-```yaml
-images:
-  defaults:
-    social: /images/taranaki.jpg
-    card: /images/taranaki.jpg
-    hero: /images/taranaki.jpg
-```
+Note: `twitter:card` is `summary_large_image` only when `jekyll-seo-tag` resolves the
+image itself (tier 1). Tiers 2–4 still emit `og:image` / `twitter:image`, but
+`jekyll-seo-tag` hard-codes `twitter:card: summary` for them, and `jekyll-feed` only
+emits an RSS `<media:thumbnail>` for tier 1. Set an explicit `image:` on posts you want
+to promote for the large X card and a feed thumbnail.
 
 ## Stylesheet and formatting notes
 
@@ -138,5 +126,4 @@ bundle exec jekyll build && ruby scripts/check_redirect_canonicals.rb
 
 ## Sitemaps
 
-- Main sitemap: `/sitemap.xml` (via `jekyll-sitemap`)
-- Topic-only sitemap: `/topics-sitemap.xml`
+- Main sitemap: `/sitemap.xml` (via `jekyll-sitemap`) — includes the topic landing pages.

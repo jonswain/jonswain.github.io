@@ -8,7 +8,7 @@ redirect_from:
 description: "A practical guide for scientists transitioning into data science, with learning paths, tools, and mindset advice."
 preview: "When I first started looking into retraining for data science, I felt completely lost and unguided. I wrote this post to share the exact things I wish I’d known before setting out, from picking the right Python courses to navigating bootcamps and getting that first bit of real-world experience."
 image:
-  social: /images/career_change/chemistry_to_data_science.png
+  path: /images/career_change/chemistry_to_data_science.png
   card: /images/career_change/chemistry_to_data_science.png
 categories:
     - data-science

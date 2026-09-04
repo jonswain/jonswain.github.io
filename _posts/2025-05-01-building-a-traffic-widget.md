@@ -8,7 +8,7 @@ redirect_from:
 description: "A practical WSL-to-Windows workflow for traffic alerts using the TomTom API, Python, and toast notifications."
 preview: "I got tired of constantly checking Google Maps after 4 pm to guess my evening commute time, so I decided to automate it. Here is a look at a quick personal project that bridges WSL and Windows to fetch TomTom routing data and ping me with desktop notifications."
 image:
-  social: /images/traffic_widget/traffic_notification.png
+  path: /images/traffic_widget/traffic_notification.png
   card: /images/traffic_widget/traffic_notification.png
 categories:
     - software-projects

@@ -1,88 +1,53 @@
 <head>
   <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   {%- seo -%}
-  {%- assign social_image = nil -%}
-  {%- if page.layout == "post" -%}
-  {%- assign post_first_content_image = nil -%}
-  {%- assign post_content_raw = page.content | default: "" -%}
 
-  {%- if post_content_raw contains "![" -%}
-  {%- assign markdown_image_sections = post_content_raw | split: "![" -%}
-  {%- assign markdown_image_tail = markdown_image_sections[1] -%}
-  {%- if markdown_image_tail and markdown_image_tail contains "](" -%}
-  {%- assign markdown_image_after_open = markdown_image_tail | split: "](" -%}
-  {%- assign markdown_image_candidate = markdown_image_after_open[1] | split: ")" | first | strip -%}
-  {%- assign markdown_image_candidate = markdown_image_candidate | split: " " | first | replace: "<", "" | replace: ">"
-    , "" -%} {%- if markdown_image_candidate and markdown_image_candidate !="" -%} {%- assign
-    post_first_content_image=markdown_image_candidate -%} {%- endif -%} {%- endif -%} {%- endif -%} {%- if
-    (post_first_content_image==nil or post_first_content_image=="" ) and post_content_raw contains "<img" and
-    post_content_raw contains "src=\"" -%}
-  {%- assign html_image_sources = post_content_raw | split: " src=\"" -%} {%- assign
-    html_image_candidate=html_image_sources[1] | split: "\"" | first | strip -%}
-  {%- if html_image_candidate and html_image_candidate != "" -%}
-  {%- assign post_first_content_image = html_image_candidate -%}
-  {%- endif -%}
-  {%- endif -%}
-
-  {%- assign social_image = page.social_image
-  | default: page.image.social
-  | default: page.image.card
-  | default: post_first_content_image
-  | default: site.images.defaults.social
-  | default: site.images.defaults.card
-  | default: site.image -%}
-  {%- else -%}
-  {%- assign social_image = site.images.defaults.social
-  | default: site.images.defaults.card
-  | default: site.image -%}
-  {%- endif -%}
-
-  {%- if social_image and social_image != "" -%}
-  <meta name=" image" property="og:image" content="{{ social_image | absolute_url }}">
-    <meta property="og:image" content="{{ social_image | absolute_url }}">
-    <meta property="twitter:image" content="{{ social_image | absolute_url }}">
-    <meta name="twitter:card" content="summary_large_image">
-    {%- endif -%}
-
-    {%- if page.layout == "post" -%}
-    {%- assign jsonld_author = page.author | default: site.title -%}
-    {%- assign jsonld_desc = page.description | default: site.description -%}
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "BlogPosting",
-      "headline": {{ page.title | jsonify }},
-      "description": {{ jsonld_desc | strip | jsonify }},
-      "datePublished": {{ page.date | date_to_xmlschema | jsonify }},
-      "dateModified": {{ page.modified_date | default: page.date | date_to_xmlschema | jsonify }},
-      "author": {
-        "@type": "Person",
-        "name": {{ jsonld_author | jsonify }}{%- if site.orcid %},
-        "url": "https://orcid.org/{{ site.orcid }}",
-        "sameAs": "https://orcid.org/{{ site.orcid }}"{%- endif %}
-      },
-      "license": "https://creativecommons.org/licenses/by/4.0/",
-      "mainEntityOfPage": {
-        "@type": "WebPage",
-        "@id": {{ page.url | absolute_url | jsonify }}
-      }
-      {%- if social_image and social_image != "" -%},
-      "image": {{ social_image | absolute_url | jsonify }}
+  {%- comment -%}
+    Social share image.
+    jekyll-seo-tag already emits og:image / twitter:image when the page sets `image:`
+    (a string, or a hash with a `path:` key). For every other page we fill the gap here,
+    falling back through: card image -> first image in the post body -> site default.
+    twitter:card is set site-wide in _config.yml so seo-tag emits it exactly once.
+  {%- endcomment -%}
+  {%- assign explicit_share_image = page.image.path | default: page.image -%}
+  {%- unless explicit_share_image -%}
+    {%- assign body_image = nil -%}
+    {%- assign share_body = page.content | default: "" -%}
+    {%- assign md_parts = share_body | split: "![" -%}
+    {%- if md_parts.size > 1 -%}
+      {%- assign md_tail = md_parts[1] | split: "](" -%}
+      {%- if md_tail.size > 1 -%}
+        {%- assign body_image = md_tail[1] | split: ")" | first | split: " " | first | strip -%}
       {%- endif -%}
-    }
-  </script>
     {%- endif -%}
-    <link rel="stylesheet" href="{{ '/assets/main.css' | relative_url }}">
-    <link rel="license" href="https://creativecommons.org/licenses/by/4.0/">
-    {%- feed_meta -%}
-    {%- if jekyll.environment == 'production' and site.google_analytics -%}
-    {%- include google-analytics.html -%}
+    {%- if body_image == nil or body_image == "" -%}
+      {%- assign html_parts = share_body | split: "<img" -%}
+      {%- if html_parts.size > 1 -%}
+        {%- assign html_src = html_parts[1] | split: 'src="' -%}
+        {%- if html_src.size > 1 -%}
+          {%- assign body_image = html_src[1] | split: '"' | first | strip -%}
+        {%- endif -%}
+      {%- endif -%}
     {%- endif -%}
+    {%- assign share_image = page.image.card | default: body_image | default: "/images/taranaki.jpg" -%}
+    <meta property="og:image" content="{{ share_image | absolute_url }}">
+    <meta property="twitter:image" content="{{ share_image | absolute_url }}">
+  {%- endunless -%}
 
-    {%- include custom-head.html -%}
+  <link rel="stylesheet" href="{{ '/assets/main.css' | relative_url }}">
+  <link rel="license" href="https://creativecommons.org/licenses/by/4.0/">
+
+  <link rel="icon" href="{{ '/assets/favicon.svg' | relative_url }}" type="image/svg+xml">
+  <link rel="icon" href="{{ '/assets/favicon-32.png' | relative_url }}" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="{{ '/assets/apple-touch-icon.png' | relative_url }}">
+  {%- feed_meta -%}
+  {%- if jekyll.environment == 'production' and site.google_analytics -%}
+  {%- include google-analytics.html -%}
+  {%- endif -%}
+
+  {%- include custom-head.html -%}
 
     {% if site.enable_math and page.layout == "post" %}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
