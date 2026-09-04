@@ -507,7 +507,7 @@ To visualise and inspect the classification results, I've used confusion matrici
 confusion_matricies(classification_predictions)
 ```
 
-![png](/images/chemprop-rf/chemprop-rf-1.png)
+![Confusion matrices for the Random Forest, Chemprop, and Chemprop-RF classification models](/images/chemprop-rf/chemprop-rf-1.png)
 
 To visualise and inspect the regression results, I've used x-y scatter plots of the predicted values against the true values. The Random Forest regressor has poor predictions, with more values being overestimated. The Chemprop model and the Chemprop-RF models perform better, especially on these lower LogS values. Some performance metrics are annotated on the plots in the top left: R2, RMSE (root mean squared error), and MAE (mean absolute error).
 
@@ -515,7 +515,7 @@ To visualise and inspect the regression results, I've used x-y scatter plots of 
 scatter_plots(regression_predictions)
 ```
 
-![png](/images/chemprop-rf/chemprop-rf-2.png)
+![Predicted versus true value scatter plots for the Random Forest, Chemprop, and Chemprop-RF regression models, annotated with R2, RMSE, and MAE](/images/chemprop-rf/chemprop-rf-2.png)
 
 As recommended in the paper I've linked, I used one-way ANOVA to compare the performance distributions from the 5x5 cross-validation and determine if there was a statistically significant difference between the means. This was followed by Tukey's Honest Significant Differences as a post-hoc pairwise test. The results are plotted using the Simultaneous Confidence Interval plot from the statsmodels Python library.
 
@@ -578,6 +578,6 @@ plot_metric_comparison(classification_metrics, matthews_corrcoef)
 plot_metric_comparison(regression_metrics, r2_score)
 ```
 
-![png](/images/chemprop-rf/chemprop-rf-3.png)
+![Tukey HSD simultaneous confidence intervals comparing Matthews correlation coefficient across the three classification models, titled with the ANOVA p-value](/images/chemprop-rf/chemprop-rf-3.png)
 
-![png](/images/chemprop-rf/chemprop-rf-4.png)
+![Tukey HSD simultaneous confidence intervals comparing R2 across the three regression models, titled with the ANOVA p-value](/images/chemprop-rf/chemprop-rf-4.png)

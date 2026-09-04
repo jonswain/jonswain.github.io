@@ -308,7 +308,7 @@ visualize_top_predictions(search)
     Training ChemProp model for Plasmodium falciparum
     Predicting with ChemProp model for Plasmodium falciparum
     
-![png](/images/drug_repurposing/malaria-hits.png){:class="img-responsive center-image"}
+![Grid of 2D chemical structures for the top 10 compounds the Chemprop model predicted as Plasmodium falciparum hits](/images/drug_repurposing/malaria-hits.png){:class="img-responsive center-image"}
 
 ### COVID-19
 
@@ -336,4 +336,4 @@ visualize_top_predictions(search)
     Training ChemProp model for SARS-CoV-2
     Predicting with ChemProp model for SARS-CoV-2
     
-![png](/images/drug_repurposing/covid-hits.png){:class="img-responsive center-image"}
+![Grid of 2D chemical structures for the top 10 compounds the Chemprop model predicted as SARS-CoV-2 hits](/images/drug_repurposing/covid-hits.png){:class="img-responsive center-image"}

@@ -519,7 +519,7 @@ ts_end = time.time()
 
 
     
-![png](/images/ts-for-classification/TS-for-classification_12_0.png)
+![Distribution of predicted activity scores for each Thompson Sampling batch, with the mean score rising from about 0.32 and converging on high-scoring compounds by around batch 15](/images/ts-for-classification/TS-for-classification_12_0.png)
 
 The mean score for the original random sample is about 0.32, the mean of the library. As we would expect, the initial random sampling did return some active compounds. As the Thompson Sampling progresses, the mean score slowly increases until the majority of compounds being scored are active. By about batch 15, the Thompson Sampling has converged on a few high scoring compounds.
 
