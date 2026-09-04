@@ -1,7 +1,11 @@
 title: Jon Swain
 subtitle: Cheminformatician and Data Scientist
 tagline: Cheminformatician and Data Scientist
-email: jonswain123@gmail.com
+# Purpose-specific Gmail alias (routes to the personal inbox; disposable if it attracts spam)
+email: jonswain123+blog@gmail.com
+author:
+  name: Jon Swain
+  email: jonswain123+blog@gmail.com
 description: >-
   I am a cheminformatician and data scientist, originally from the UK, but often found in Aotearoa (New Zealand).
   I'm interested in using data science and machine learning to solve problems in drug discovery.

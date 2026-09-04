@@ -12,7 +12,7 @@ I now work as a Research Software Engineer at [OpenADMET](https://openadmet.org)
 
 Outside of my work in data science and cheminformatics, I spend most of my time outside, climbing, hiking, or rowing.
 
-If you would like to discuss a project, collaborate, or ask about a post, please reach out by email or on LinkedIn.
+If you would like to discuss a project, collaborate, or ask about a post, please reach out by [email](mailto:jonswain123+blog@gmail.com) or on [LinkedIn](https://www.linkedin.com/in/jonathan-swain/).
 
 ---
 
