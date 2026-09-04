@@ -1,0 +1,4 @@
+Jon Swain:
+  name: Jon Swain
+  uri: https://orcid.org/0000-0003-4457-1481   # jekyll-feed -> <author><uri>
+  url: https://orcid.org/0000-0003-4457-1481   # jekyll-seo-tag -> JSON-LD author.url

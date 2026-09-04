@@ -6,7 +6,9 @@ permalink: /about/
 
 ![A man standing in front of a volcano in Aotearoa New Zealand](/images/taranaki.jpg){:class="img-responsive"}
 
-My name is Jon Swain. I'm a data scientist and cheminformatician based in Tāmaki Makaurau, Aotearoa (Auckland, New Zealand). I completed my undergraduate degree at University College, London, with a year abroad at the University of Toronto. I then went on to complete my PhD with Professor Chris Hunter at the University of Cambridge before moving to Aotearoa to complete a postdoc with Distinguished Professor Dame Margaret Brimble. After a brief return to the UK, working at Vernalis Research near Cambridge, I returned to Aotearoa. [I currently work as a contractor, specialising in applying AI and ML to drug discovery projects](https://cambridgecheminformatics.com).
+My name is Jon Swain. I'm a cheminformatician and data scientist based in Tāmaki Makaurau, Aotearoa (Auckland, New Zealand). I completed my undergraduate degree at University College London, with a year abroad at the University of Toronto. I then went on to complete my PhD with Professor Chris Hunter at the University of Cambridge before moving to Aotearoa to complete a postdoc with Distinguished Professor Dame Margaret Brimble. After a brief return to the UK, working at Vernalis Research near Cambridge, I came back to Aotearoa to lead the data science team at a medical device company called Veriphi.
+
+I now work as a Research Software Engineer at [OpenADMET](https://openadmet.org), part of the [Open Molecular Software Foundation](https://omsf.io), where I build open infrastructure for ADMET blind challenges and tooling for rigorous, reproducible model evaluation. Alongside this I run [Cambridge Cheminformatics Consulting](https://cambridgecheminformatics.com), building RDKit-based software for drug discovery workflows.
 
 Outside of my work in data science and cheminformatics, I spend most of my time outside, climbing, hiking, or rowing.
 

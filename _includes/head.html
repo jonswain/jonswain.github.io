@@ -60,7 +60,9 @@
       "dateModified": {{ page.modified_date | default: page.date | date_to_xmlschema | jsonify }},
       "author": {
         "@type": "Person",
-        "name": {{ jsonld_author | jsonify }}
+        "name": {{ jsonld_author | jsonify }}{%- if site.orcid %},
+        "url": "https://orcid.org/{{ site.orcid }}",
+        "sameAs": "https://orcid.org/{{ site.orcid }}"{%- endif %}
       },
       "license": "https://creativecommons.org/licenses/by/4.0/",
       "mainEntityOfPage": {
