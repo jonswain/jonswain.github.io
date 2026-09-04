@@ -22,14 +22,4 @@ All original code on this blog is provided under the MIT License. You are free t
 
 ---
 
-This website was built using the Minima Jekyll theme. The code is available on [my github](https://github.com/jonswain). You can find out more info about customizing your Jekyll theme, as well as basic Jekyll usage documentation at [jekyllrb.com](https://jekyllrb.com/)
-
-You can find the source code for Minima at GitHub:
-[jekyll][jekyll-organization] /
-[minima](https://github.com/jekyll/minima)
-
-You can find the source code for Jekyll at GitHub:
-[jekyll][jekyll-organization] /
-[jekyll](https://github.com/jekyll/jekyll)
-
-[jekyll-organization]: https://github.com/jekyll
+This website is built with [Jekyll](https://github.com/jekyll/jekyll) and a customised version of the [Minima](https://github.com/jekyll/minima) theme. The source is on [my GitHub](https://github.com/jonswain/jonswain.github.io).
