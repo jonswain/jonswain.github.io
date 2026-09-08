@@ -3,6 +3,7 @@ layout: post
 title: "Working with Large Virtual Chemical Libraries: Part 3 - Thompson Sampling for Classification"
 date: 2025-11-26 17:00:00 +1300
 permalink: /ultra-large-libraries-part-3-thompson-sampling-classification/
+doi: 10.59350/wc9hv-mqt73
 redirect_from:
     - /ai/cheminformatics/data%20science/machine%20learning/thompson%20sampling/ultra-large%20libraries/2025/11/26/TS-for-classification.html
 description: "Extending a virtual library series with Thompson sampling for classification-based compound discovery."

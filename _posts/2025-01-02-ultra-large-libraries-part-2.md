@@ -3,6 +3,7 @@ layout: post
 title:  "Working with Large Virtual Chemical Libraries: Part 2 - Genetic Algorithms"
 date:   2025-01-02 12:00:00 +0100
 permalink: /ultra-large-libraries-part-2/
+doi: 10.59350/7tack-xqe19
 redirect_from:
     - /ai/cheminformatics/data%20science/genetic%20algorithms/ultra-large%20libraries/2025/01/02/ultra-large-libraries-part-2.html
 description: "Using genetic algorithms to search combinatorial chemical libraries without exhaustive enumeration."

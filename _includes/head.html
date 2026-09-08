@@ -43,6 +43,13 @@
   <link rel="icon" href="{{ '/assets/favicon-32.png' | relative_url }}" sizes="32x32" type="image/png">
   <link rel="apple-touch-icon" href="{{ '/assets/apple-touch-icon.png' | relative_url }}">
   {%- feed_meta -%}
+  {%- if page.layout == "post" -%}
+  <meta name="citation_title" content="{{ page.title | escape }}">
+  <meta name="citation_author" content="Swain, Jon">
+  <meta name="citation_publication_date" content="{{ page.date | date: '%Y/%m/%d' }}">
+  <meta name="citation_public_url" content="{{ page.url | absolute_url }}">
+  {%- if page.doi %}<meta name="citation_doi" content="{{ page.doi }}">{% endif -%}
+  {%- endif -%}
   {%- if jekyll.environment == 'production' and site.google_analytics -%}
   {%- include google-analytics.html -%}
   {%- endif -%}

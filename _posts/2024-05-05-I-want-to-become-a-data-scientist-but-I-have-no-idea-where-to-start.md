@@ -3,6 +3,7 @@ layout: post
 title:  "I Want to Become a Data Scientist, but I Have No Idea Where to Start..."
 date:   2024-05-05 20:04:00 +0100
 permalink: /become-a-data-scientist-starting-guide/
+doi: 10.59350/qfdrh-57d64
 redirect_from:
     - /data%20science/cheminformatics/training/2024/05/05/I-want-to-become-a-data-scientist,-but-I-have-no-idea-where-to-start.html
 description: "A practical guide for scientists transitioning into data science, with learning paths, tools, and mindset advice."

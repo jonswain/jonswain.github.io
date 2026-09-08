@@ -103,6 +103,28 @@
     font-size: 1.1rem;
 }
 
+.post-cite {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e5e5e5;
+    font-size: $small-font-size;
+}
+
+.post-cite h2 {
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+}
+
+.post-cite-bibtex summary {
+    cursor: pointer;
+}
+
+.post-cite-bibtex pre {
+    margin-top: 0.75rem;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
 .post-share {
     margin: 2rem auto 0;
     max-width: 42rem;

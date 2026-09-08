@@ -3,6 +3,7 @@ layout: post
 title: "Building a Traffic Reminder Widget"
 date: 2025-05-01 12:00:00 +0100
 permalink: /building-a-traffic-reminder-widget/
+doi: 10.59350/8kc3w-r1780
 redirect_from:
     - general/2025/05/01/building-a-traffic-widget.html
 description: "A practical WSL-to-Windows workflow for traffic alerts using the TomTom API, Python, and toast notifications."

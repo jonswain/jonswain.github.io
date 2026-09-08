@@ -57,6 +57,32 @@ layout: base
     {{ content }}
   </div>
 
+  {%- if page.doi -%}
+  {%- assign doi_url = page.doi | prepend: "https://doi.org/" -%}
+  {%- assign ob = '{' -%}
+  {%- assign cb = '}' -%}
+  <section class="post-cite" aria-label="Cite this post">
+    <h2>Cite This Post</h2>
+    <p class="post-cite-text">
+      {{ page.author | default: site.title }} ({{ page.date | date: "%Y" }}).
+      {{ page.title | escape }}. <em>{{ site.title | escape }}</em>.
+      <a class="u-doi" rel="bookmark" href="{{ doi_url }}">{{ doi_url }}</a>
+    </p>
+    <details class="post-cite-bibtex">
+      <summary>BibTeX</summary>
+<pre>@misc{{ ob }}{{ page.slug }},
+  author       = {{ ob }}Swain, Jon{{ cb }},
+  title        = {{ ob }}{{ page.title }}{{ cb }},
+  year         = {{ ob }}{{ page.date | date: "%Y" }}{{ cb }},
+  month        = {{ ob }}{{ page.date | date: "%b" | downcase }}{{ cb }},
+  howpublished = {{ ob }}Blog post, {{ site.title }}{{ cb }},
+  doi          = {{ ob }}{{ page.doi }}{{ cb }},
+  url          = {{ ob }}{{ doi_url }}{{ cb }}
+{{ cb }}</pre>
+    </details>
+  </section>
+  {%- endif -%}
+
   {%- assign shown_related = 0 -%}
   {%- assign post_count = site.posts | size -%}
   {%- assign related_offset = page.date | date: "%s" | modulo: post_count -%}

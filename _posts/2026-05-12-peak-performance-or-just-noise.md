@@ -3,6 +3,7 @@ layout: post
 title: "Peak Performance or Just Noise?"
 date: 2026-05-13 14:00:00 
 permalink: /peak-performance-or-just-noise/
+doi: 10.59350/a3xwq-kgr43
 redirect_from:
     - /ai/cheminformatics/data%20science/machine%20learning/openadmet/omsf/2026/05/13/peak-performance-or-just-noise.html
 description: "Why leaderboard rank gaps can be noise, and how paired bootstrap intervals and permutation tests improve blind challenge comparisons."

@@ -3,6 +3,7 @@ layout: post
 title:  "TabPFN for Chemical Datasets"
 date:   2025-01-22 12:00:00 +0100
 permalink: /tabpfn-for-chemical-datasets/
+doi: 10.59350/y9a60-68b25
 redirect_from:
     - /ai/cheminformatics/data%20science/machine%20learning/2025/01/22/TabPFN-for-chemical-datasets.html
 description: "Evaluating TabPFN on cheminformatics datasets and comparing its performance on molecular property tasks."
