@@ -51,3 +51,4 @@ google_analytics: G-R6CVGR431E
 header_pages:
   - about.markdown
   - topics/index.md
+  - visualisations/index.html

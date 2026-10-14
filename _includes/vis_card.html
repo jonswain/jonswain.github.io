@@ -1,0 +1,23 @@
+{%- comment -%}
+Card for an entry in _data/visualisations.yml. Mirrors post_card.html (same classes, so the same
+styling) but links straight to the standalone visualisation page and has no reading time.
+{%- endcomment -%}
+{%- assign vis = include.vis -%}
+{%- assign date_format = include.date_format | default: site.minima.date_format | default: "%b %-d, %Y" -%}
+
+<li class="post-card-item">
+    {%- if vis.image and vis.image != "" -%}
+    <a class="post-card-image-link" href="{{ vis.url | relative_url }}" aria-label="Open {{ vis.title | escape }}">
+        <img class="post-card-image" src="{{ vis.image | relative_url }}" alt="{{ vis.alt | default: vis.title | escape }}"
+            loading="lazy" decoding="async">
+    </a>
+    {%- endif -%}
+    <span class="post-meta">{{ vis.date | date: date_format }} • Interactive</span>
+    <h3>
+        <a class="post-link" href="{{ vis.url | relative_url }}">
+            {{ vis.title | escape }}
+        </a>
+    </h3>
+    <p class="post-summary">{{ vis.preview | strip_html | normalize_whitespace }}</p>
+    <p><a class="read-more" href="{{ vis.url | relative_url }}">Open visualisation</a></p>
+</li>

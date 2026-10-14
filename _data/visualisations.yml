@@ -1,0 +1,15 @@
+# Interactive visualisations listed on /visualisations/ (newest first).
+# Each page is a self-contained HTML file in visualisations/<slug>/index.html, built from its
+# source project with `scripts/build_report.py --standalone <path>`.
+- title: "Row vs Run"
+  date: 2026-10-14
+  url: /visualisations/row-vs-run/
+  preview: "Is a Concept2 erg time faster than a running time over the same distance? Only at the very top: world-best runners leave the erg behind, but rowing is faster for almost everyone else, from 100 m to the marathon."
+  image: /images/visualisations/row-vs-run.png
+  alt: "Heatmap of running vs erg speed by distance and standard"
+- title: "NZ Champs Speed Tables"
+  date: 2026-10-14
+  url: /visualisations/nz-champs-speed-tables/
+  preview: "Twenty years of NZ Rowing Championships and Maadi Cup finals turned into condition-adjusted speed factors, with a crew-comparison calculator, world-best comparisons, and analysis of conditions, lanes and close racing."
+  image: /images/visualisations/nz-champs-speed-tables.png
+  alt: "Grade factor matrix from the NZ Champs Speed Tables"

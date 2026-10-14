@@ -127,3 +127,20 @@ bundle exec jekyll build && ruby scripts/check_redirect_canonicals.rb
 ## Sitemaps
 
 - Main sitemap: `/sitemap.xml` (via `jekyll-sitemap`) — includes the topic landing pages.
+
+## Visualisations
+
+`/visualisations/` (in the header nav) lists interactive pages as cards. Each card links straight to a
+self-contained HTML page in `visualisations/<slug>/index.html`. These pages have no front matter, so
+Jekyll copies them unchanged; each one carries its own `<head>`, share tags and the GA snippet.
+
+To add or refresh one:
+
+1. Build the page from its source project, e.g.
+   `python scripts/build_report.py --standalone ../jonswain.github.io/visualisations/<slug>/index.html`
+   (`rowing_metrics`: NZ Champs Speed Tables, athlete names removed; `row_vs_run`: Row vs Run).
+2. Add or update its entry in `_data/visualisations.yml` (title, date, url, preview, image, alt).
+3. Save a 1200×630 screenshot as `images/visualisations/<slug>.png` (card thumbnail and `og:image`).
+
+Cards are rendered by `_includes/vis_card.html`, which reuses the post-card styles.
+

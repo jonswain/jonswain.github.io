@@ -1,0 +1,16 @@
+---
+layout: page
+title: Visualisations
+permalink: /visualisations/
+description: "Interactive data visualisations: vibe-coded experiments built for fun."
+---
+
+<p>These are vibe-coded experiments, built for fun with <a href="https://claude.ai">Claude</a>. They're interactive pages rather than write-ups, and the numbers come with caveats, so check each page's method section before quoting anything.</p>
+
+{% assign date_format = site.minima.date_format | default: "%b %-d, %Y" %}
+{% assign vis_items = site.data.visualisations | sort: "date" | reverse %}
+<ul class="post-list">
+  {% for vis in vis_items %}
+  {% include vis_card.html vis=vis date_format=date_format %}
+  {% endfor %}
+</ul>
