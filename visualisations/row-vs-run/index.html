@@ -86,7 +86,7 @@ p { margin: 0; max-width: 68ch; }
 .mono { font-family: var(--f-mono); font-variant-numeric: tabular-nums; }
 header.top { display: grid; gap: 14px; padding-bottom: 28px; border-bottom: 2px solid var(--ink); }
 .verdict { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin-top: 6px; }
-.v { display: grid; gap: 4px; padding-top: 10px; border-top: 3px solid var(--ink); }
+.v { display: grid; gap: 4px; align-content: start; padding-top: 10px; border-top: 3px solid var(--ink); }
 .v .n { font: 600 1.55rem/1.1 var(--f-mono); white-space: nowrap; }
 .v .k { font-size: 0.92rem; color: var(--ink-2); }
 section.block { display: grid; gap: 14px; padding-block: 44px 4px; }
@@ -125,7 +125,7 @@ td.n, th.n { text-align: right; font-family: var(--f-mono); font-variant-numeric
 <header class="top">
   <span class="eyebrow">Concept2 erg vs running · 100 m to marathon</span>
   <h1>Row vs Run</h1>
-  <p class="lede">Is a <span class="row-c">Concept2 erg</span> time faster than a <span class="run-c">running</span> time over the same distance? Only at the very top. World-best runners leave the erg far behind, but rowing is faster for almost everyone else, and the weaker the athlete the bigger rowing's lead.</p>
+  <p class="lede">Is a <span class="row-c">Concept2 erg</span> time faster than a <span class="run-c">running</span> time over the same distance? For almost everyone, yes. Running only wins at the very top: world-best runners leave the erg far behind, but below roughly the top 2–3% of men (and an even smaller slice of women) the erg is faster, and the weaker the athlete, the bigger the erg's lead.</p>
   <div class="verdict" id="verdict"></div>
 </header>
 
@@ -154,10 +154,10 @@ td.n, th.n { text-align: right; font-family: var(--f-mono); font-variant-numeric
 
 <section class="block" id="spread">
   <div class="head"><span class="eyebrow">Why the gap closes</span><h2>The erg squashes everyone together</h2>
-  <p>How close each standard gets to world-best speed, averaged over 1 km to 10 km. A beginner on the erg is already about two-thirds of the way to world-record pace. A beginner runner is at about 40%.</p></div>
+  <p>How close each standard gets to world-best speed, averaged over 1 km to 10 km. A beginner on the erg already moves at about two-thirds of world-best speed. A beginner runner moves at about 40%.</p></div>
   <div class="panel"><div class="legend"><span><i style="background:var(--row)"></i>Erg</span><span><i style="background:var(--run)"></i>Running</span></div><div class="chart" id="spreadChart"></div></div>
-  <div class="head"><h3>Power, not effort, sets erg pace</h3>
-  <p>The Concept2 monitor turns power into pace with a cube root: watts = 2.80 ÷ (seconds per metre)³. Eight times the power only doubles the speed. Running speed rises roughly in line with the energy you put in. So differences in fitness show up about three times smaller on the erg. Body weight works the same way: the erg carries your weight for you, while a runner has to lift every kilogram.</p></div>
+  <div class="head"><h3>The erg's pace scale compresses differences in fitness</h3>
+  <p>The Concept2 monitor turns power into pace with a cube root: watts = 2.80 ÷ (seconds per metre)³. Eight times the power only doubles the speed. Running speed rises roughly in proportion to the energy you put in. So the same difference in fitness shows up about three times smaller on the erg. Body weight matters too: the erg supports your weight, while a runner carries every kilogram.</p></div>
   <div class="panel"><div class="legend" id="pLegend"></div><div class="chart" id="physChart"></div>
   <p class="note" id="physNote"></p></div>
 </section>
@@ -222,10 +222,10 @@ const fmtOne = v => v == null ? "–" : v > 10000 ? "over 10,000" : Math.round(v
   const mL = oneInMed(R.crossover, "M"), mC = oneInMed(R.crossover_c2, "M"), fL = oneInMed(R.crossover, "F"), fC = oneInMed(R.crossover_c2, "F");
   const V = (n, k) => `<div class="v"><span class="n">${n}</span><span class="k">${k}</span></div>`;
   $("#verdict").innerHTML =
-    V(`<span class="run-c">${Math.min(...wb).toFixed(0)}–${Math.max(...wb).toFixed(0)}%</span>`, "faster running than rowing at world-best level, 1 km to marathon (more over sprints)") +
-    V(`1 in ${Math.round(Math.min(mL, mC))}–${Math.round(Math.max(mL, mC))}`, "top men: how good a man must be before running beats the erg (about the 97th–98th percentile; median over distances, both erg data sources)") +
-    V(`1 in ${fmtOne(Math.min(fL, fC))}+`, `top women: running only wins around the 99.8th percentile or higher (${fmtOne(fL)} with the standards, ${fmtOne(fC)} with real rankings)`) +
-    V(`<span class="row-c">${Math.round(Math.min(begL, begC))}–${Math.round(Math.max(begL, begC))}%</span>`, "slower running than rowing for beginners (5th percentile), median over 1 km–marathon, real rankings to standards");
+    V(`<span class="run-c">${Math.min(...wb).toFixed(0)}–${Math.max(...wb).toFixed(0)}%</span>`, "How much faster world-best running is than the world-best erg, from 1 km to the marathon. The gap is bigger over sprints.") +
+    V(`1 in ${Math.round(Math.min(mL, mC))}–${Math.round(Math.max(mL, mC))}`, "Men: running only beats the erg for roughly this top slice of the field, the 97th–98th percentile. Typical across distances, with either erg data source.") +
+    V(`1 in ${fmtOne(Math.min(fL, fC))}+`, `Women: running only wins at around the 99.8th percentile or higher (1 in ${fmtOne(fL)} with the erg standards, 1 in ${fmtOne(fC)} with real Concept2 rankings).`) +
+    V(`<span class="row-c">${Math.round(Math.min(begL, begC))}–${Math.round(Math.max(begL, begC))}%</span>`, `How much slower beginners (5th percentile) are running than on the erg. Typical gap from 1 km to the marathon: ${Math.round(begC)}% with real Concept2 rankings, ${Math.round(begL)}% with the erg standards.`);
 })();
 
 /* ---------- heatmap ---------- */
@@ -292,7 +292,7 @@ function lineChart(box, { series, yLo, yHi, yStep, yFmt, xs, xLabel, logY = fals
   const ser = [mk(R.crossover, "M", "Men · standards", "var(--ink)", "", 2.5), mk(R.crossover_c2, "M", "Men · C2 rankings", "var(--ink)", "2 4", 2),
                mk(R.crossover, "F", "Women · standards", "var(--ink-2)", "7 4", 2.5), mk(R.crossover_c2, "F", "Women · C2 rankings", "var(--ink-2)", "2 4", 2)];
   lineChart($("#crossChart"), { series: ser, yLo: 10, yHi: CAP, yStep: 10, logY: true, yFmt: v => v >= CAP ? "1 in 10,000+" : "1 in " + v.toLocaleString(), xs, xLabel: "distance", H: 320, ml: 84, mr: 132 });
-  $("#crossNote").textContent = `For men the crossover is steady whichever erg data is used: around the top 1 in ${Math.round(oneInMed(R.crossover, "M"))}–${Math.round(oneInMed(R.crossover_c2, "M"))} at most distances from 1 km to the marathon. For women it sits much higher, typically the top 1 in ${fmtOne(oneInMed(R.crossover, "F"))} or rarer, and at some distances the two sports' curves are so close to parallel that the extrapolation runs off the chart (shown at the top as 1 in 10,000+). Women's erg standards sit closer to the men's than women's running standards do, so women need to be further up the field before running catches up.`;
+  $("#crossNote").textContent = `For men the crossover is steady whichever erg data is used: around the top 1 in ${Math.round(oneInMed(R.crossover, "M"))}–${Math.round(oneInMed(R.crossover_c2, "M"))} at most distances from 1 km to the marathon. For women it sits much higher, typically the top 1 in ${fmtOne(oneInMed(R.crossover, "F"))} or rarer, and at some distances the two sports' curves are so close to parallel that the extrapolation runs off the chart (shown at the top as 1 in 10,000+). The reason is spread: women's erg times fan out more between beginner and elite than men's do, while running spreads by about the same amount for both. So for women the two sports' curves converge more slowly and only meet further up the field.`;
 })();
 
 /* ---------- pace curves ---------- */
@@ -387,8 +387,8 @@ function drawAge() {
   });
   const at = (age, lvl) => data.find(d => d.age === age && d.standard === lvl)?.run_faster_pct;
   const pos = data.filter(d => d.run_faster_pct > 0.5).sort((a, b) => b.run_faster_pct - a.run_faster_pct);
-  const fmtA = v => `${Math.abs(v).toFixed(0)}% ${v > 0 ? "in running's favour" : "in the erg's favour"}`;
-  $("#ageNote").textContent = `Numbers are % (positive = running faster). The erg's lead grows steadily with age: for an Intermediate it goes from ${fmtA(at(20, "Intermediate"))} at age 20 to ${fmtA(at(50, "Intermediate"))} at 50 and ${fmtA(at(80, "Intermediate"))} at 80. ` +
+  const fmtA = v => `${Math.abs(v).toFixed(0)}%`;
+  $("#ageNote").textContent = `Numbers are % (positive = running faster). The erg's lead grows steadily with age: for an Intermediate it is ${fmtA(at(20, "Intermediate"))} at age 20, ${fmtA(at(50, "Intermediate"))} at 50 and ${fmtA(at(80, "Intermediate"))} at 80. ` +
     (pos.length ? `Running only gets ahead for ${[...new Set(pos.map(d => `${d.standard.toLowerCase()} ${d.age}-year-olds`))].join(" and ")} (up to +${pos[0].run_faster_pct.toFixed(1)}%). ` : "Running is never ahead at this distance. ") +
     "Both sites age-adjust with their own models, so part of this pattern reflects how each one models ageing.";
 }
@@ -422,7 +422,7 @@ seg("#vG", [["M", "Men"], ["F", "Women"]], "g4", "M", drawValid);
 (() => {
   const items = [
     "<b>Standards.</b> Both sports use the same definition: Beginner, Novice, Intermediate, Advanced and Elite are the 5th, 20th, 50th, 80th and 95th percentiles of participants of the same gender and age. The running tables come from Running Level and the erg tables from its sister site Rowing Level (same publisher, same method). The main comparison uses age 30.",
-    "<b>World bests.</b> Running: the fastest outdoor track or road time at each distance from Wikipedia's List of world records in athletics, including its non-standard world bests such as 500 m. The men's marathon figure is whatever that list currently shows. Erg: the faster of Rowing Level's quoted fastest time and the best ranked time in the Concept2 Logbook, 2010–2026, all ages.",
+    "<b>World bests.</b> Running: the fastest outdoor track or road time at each distance from Wikipedia's List of world records in athletics, including its non-standard world bests such as 500 m. For the men's marathon that list currently gives 1:59:30, which is used as is. Erg: the faster of Rowing Level's quoted fastest time and the best ranked time in the Concept2 Logbook, 2010–2026, all ages.",
     "<b>Common distances.</b> Times are interpolated on a log-time against log-distance curve (monotone cubic, no extrapolation), so running standards that start at 1 km are not stretched down to sprints.",
     "<b>Crossover.</b> For each sport, gender and distance, log(time) is fitted as a straight line against the normal z-score of the five percentiles. The Rowing Level tables fit almost exactly (they are clearly generated from a normal model); the running tables fit to within about 2–3%. The crossover is where the two lines meet. It lies above the 95th percentile, so it is an extrapolation.",
     "<b>Validation.</b> Real 2025-season Concept2 Logbook rankings (May 2024 to April 2025), read at the same percentiles by fetching the ranking page at the right position, for 30–39 year-olds.",
