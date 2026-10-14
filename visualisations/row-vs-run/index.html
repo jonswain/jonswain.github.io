@@ -131,7 +131,7 @@ td.n, th.n { text-align: right; font-family: var(--f-mono); font-variant-numeric
 
 <section class="block" id="heat">
   <div class="head"><span class="eyebrow">The answer</span><h2>Who's faster, by distance and standard</h2>
-  <p>Each cell compares the same standard of athlete in each sport, at the same population percentile. Orange cells mean running is faster. Blue cells mean the erg is faster. The bottom row compares world bests. Switch the erg data between Rowing Level's standards (age 30) and real 2025 Concept2 rankings (age 30–39, against age-35 running standards).</p></div>
+  <p>Each cell compares the same standard of athlete in each sport, at the same population percentile. Orange cells mean running is faster. Blue cells mean the erg is faster. The top row compares world bests. Switch the erg data between Rowing Level's standards (age 30) and real 2025 Concept2 rankings (age 30–39, against age-35 running standards).</p></div>
   <div class="row"><div class="seg" role="group" aria-label="Gender" id="hG"></div><div class="seg" role="group" aria-label="Erg data" id="hS"></div>
     <div class="scale"><span class="row-c">Erg faster</span><span class="bar"></span><span class="run-c">Running faster</span></div></div>
   <div class="panel scroll"><div class="chart" id="heatChart"></div></div>
@@ -233,13 +233,13 @@ let hG = "M", hS = "level";
 function drawHeat() {
   const g = hG, HEAT = hS === "c2" ? R.heat_c2 : R.heat, ageTxt = hS === "c2" ? "age 30–39, real Concept2 rankings" : "age 30";
   const box = $("#heatChart"); box.innerHTML = "";
-  const rows = [...LEVELS.slice().reverse(), "World best"], cols = R.grid.map(x => x.d);
+  const rows = ["World best", ...LEVELS.slice().reverse()], cols = R.grid.map(x => x.d);
   const cw = 64, ch = 40, lw = 128, th = 30, W = lw + cols.length * cw, H = th + rows.length * ch + 10;
   const svg = el("svg", { viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": `${GL[g]}: running vs erg speed by distance and standard` }, box);
   svg.style.minWidth = "760px";
   cols.forEach((d, j) => el("text", { x: lw + j * cw + cw / 2, y: 18, "text-anchor": "middle", class: "lbl", text: DL[d] }, svg));
   rows.forEach((r, i) => {
-    const y = th + i * ch + (r === "World best" ? 8 : 0);
+    const y = th + i * ch + (r === "World best" ? 0 : 8);  // small gap below the world-best row
     el("text", { x: lw - 10, y: y + ch / 2 + 4, "text-anchor": "end", class: "lbl", text: r === "World best" ? "World best" : `${r} (${LQ[r]}th)` }, svg);
     cols.forEach((d, j) => {
       const h = HEAT.find(x => x.gender === g && x.standard === r && x.distance_m === d);
