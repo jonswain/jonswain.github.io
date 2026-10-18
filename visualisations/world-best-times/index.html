@@ -72,6 +72,8 @@
   color-scheme: dark;
 }
 * { box-sizing: border-box; }
+/* the tabs hide sections with the hidden attribute; section and .grp set display, so restate it (the blog build has no artifact reset) */
+[hidden] { display: none !important; }
 body { background: var(--bg); color: var(--ink); font: 15px/1.55 var(--f-body); }
 .wrap { max-width: 1080px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 28px 80px; display: grid; gap: 56px; }
 h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; line-height: 1.05; margin: 0; }
