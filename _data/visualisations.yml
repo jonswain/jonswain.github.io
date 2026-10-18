@@ -1,6 +1,13 @@
 # Interactive visualisations listed on /visualisations/ (newest first).
 # Each page is a self-contained HTML file in visualisations/<slug>/index.html, built from its
-# source project with `scripts/build_report.py --standalone <path>`.
+# source project with `scripts/build_report.py --standalone <path>` (or build_wbt_report.py for
+# World Best Time Difficulty).
+- title: "World Best Time Difficulty"
+  date: 2026-10-19
+  url: /visualisations/world-best-times/
+  preview: "Which rowing world best times are hardest to beat? Every elite record split into the crew and the day, with record histories, unlucky and great crews, the records most likely to fall in 2027, pacing, wind, venues and countries."
+  image: /images/visualisations/world-best-times.png
+  alt: "Bar chart splitting each world best time into conditions and crew"
 - title: "Row vs Run"
   date: 2026-10-14
   url: /visualisations/row-vs-run/
