@@ -2,6 +2,12 @@
 # Each page is a self-contained HTML file in visualisations/<slug>/index.html, built from its
 # source project with `scripts/build_report.py --standalone <path>` (or build_wbt_report.py for
 # World Best Time Difficulty).
+- title: "Erg Test Calculator"
+  date: 2026-10-21
+  url: /visualisations/erg-test-calculator/
+  preview: "Predict an erg time or split for any distance or duration from one or more recent tests. A Bayesian model learned from 42,000 Concept2 Logbook athletes who ranked several events adapts to your own speed and fade, with training paces, critical power, a pacing plan and your erg fingerprint."
+  image: /images/visualisations/erg-test-calculator.png
+  alt: "Erg test calculator predicting a 4,000 m time from a 2k and a 6k"
 - title: "World Best Time Difficulty"
   date: 2026-10-19
   url: /visualisations/world-best-times/
