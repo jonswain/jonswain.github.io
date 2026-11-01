@@ -34,7 +34,7 @@ I thought this was a really cool idea. [OPSIN](https://github.com/dan2097/opsin)
 
 But what if you need to do the reverse? What if you have a chemical structure and you need the IUPAC name for your paper? (Yes, I guess you could just use ChemDraw, but what if you don't have a licence?) That's where NISPO comes in. Because OPSIN is a cheap, deterministic function, it can be used as an oracle for an agentic loop. The authors took structures from PubChem, had NISPO generate a name for each, and used OPSIN to parse that name back into a structure. The round-trip accuracy, the fraction of names that parse back to the original structure, became the objective the agent iterated against. With the benchmark and oracle in place, Codex did the rest without human intervention.
 
-> Whilst preparing this I saw [this blog post](https://baoilleach.blogspot.com/2026/10/assessing-open-source-iupac-name.html) from Noel O'Boyle on open-source IUPAC name generators. [OpenClatura](https://github.com/lamalab-org/openclatura) and Orthonym also do the same thing.
+> Whilst preparing this I saw [this blog post](https://baoilleach.blogspot.com/2026/10/assessing-open-source-iupac-name.html) from Noel O'Boyle on open-source IUPAC name generators. [OpenClatura](https://github.com/lamalab-org/openclatura) and [Orthonym](https://chemrxiv.org/doi/full/10.26434/chemrxiv.15009769/v1) also do the same thing.
 
 ## Running a fingerprint backwards
 
