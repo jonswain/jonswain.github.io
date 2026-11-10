@@ -1,7 +1,14 @@
 # Interactive visualisations listed on /visualisations/ (newest first).
 # Each page is a self-contained HTML file in visualisations/<slug>/index.html, built from its
 # source project with `scripts/build_report.py --standalone <path>` (or build_wbt_report.py for
-# World Best Time Difficulty).
+# World Best Time Difficulty). Whau River Conditions comes from whau_river_conditions with
+# `scripts/build.py --standalone <path>`.
+- title: "Whau River Conditions"
+  date: 2026-11-10
+  url: /visualisations/whau-conditions/
+  preview: "Tide, Whau Stream flow, wind and light for rowing out of West End Rowing Club, now or at any time up to two weeks ahead, with S-bend access, wind against tide and a harbour conditions call."
+  image: /images/visualisations/whau-conditions.png
+  alt: "Condition badges for tide, stream, wind, harbour and light on the Whau River"
 - title: "Erg Test Calculator"
   date: 2026-10-21
   url: /visualisations/erg-test-calculator/
