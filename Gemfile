@@ -37,3 +37,8 @@ gem "http_parser.rb", "~> 0.6.0", :platforms => [:jruby]
 
 # Emojis in blog posts
 gem 'jemoji'
+# No longer default gems in Ruby 3.4+ (logger leaves in 4.0); Jekyll 4.3 still requires them
+gem "csv"
+gem "logger"
+gem "base64"
+gem "bigdecimal"
