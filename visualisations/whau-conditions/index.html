@@ -40,8 +40,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Public+Sans:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;600&display=swap">
 <style>
-/* Layout: one column. Time picker, then a four-chip verdict (tide, stream, wind, light), then one
-   panel per source. Same tokens as the Erg Test Calculator page; status uses good/warn/bad. */
+/* Layout: one column. Time picker, then a six-chip verdict (tide, wind, weather / light, wind v tide,
+   harbour), then one panel per source. Same tokens as the Erg Test Calculator page; status uses good/warn/bad. */
 :root {
   --bg: #f4f7f7; --surface: #fbfcfc; --ink: #0f262c; --ink-2: #44585d; --muted: #7d8c8f;
   --rule: #dbe3e3; --axis: #b9c6c7;
@@ -158,7 +158,7 @@ footer a { color: var(--ink-2); }
   <header class="top">
     <span class="eyebrow">West End Rowing Club · Whau River, Tāmaki Makaurau</span>
     <h1>Whau River Conditions</h1>
-    <p class="note">Tide, stream flow, wind and light for the river at Saunders Reserve, now or at any time up to two weeks ahead.</p>
+    <p class="note">Tide, wind, weather and light for the river at Saunders Reserve, now or at any time up to two weeks ahead.</p>
   </header>
 
   <div class="when" role="group" aria-label="Choose a time">
@@ -180,14 +180,6 @@ footer a { color: var(--ink-2); }
     <p class="legend"><i></i><span id="sbLegend">Above S-bend accessible: within 2 h of high water (club rule)</span></p>
   </section>
 
-  <section class="panel" id="stream">
-    <div class="ph"><h2>Whau Stream &amp; rain</h2><span class="note" id="rainNote"></span></div>
-    <div class="stats" id="rainStats"></div>
-    <p id="rainText"></p>
-    <div class="chart" id="rainChart"></div>
-    <p class="note">The Whau is a small, fast urban stream. Over a year of Auckland Council gauge data, rain in the previous 6 hours was the best guide to its flow: it rises within hours of heavy rain and is usually back to normal about 6 hours after the rain stops.</p>
-  </section>
-
   <section class="panel" id="weather">
     <div class="ph"><h2>Wind &amp; weather</h2><span class="note" id="wxNote"></span></div>
     <div class="stats" id="wxStats"></div>
@@ -207,7 +199,7 @@ footer a { color: var(--ink-2); }
   </details>
 
   <footer>
-    <p><b>Sources.</b> Tides: <a href="https://www.linz.govt.nz/products-services/tides-and-tidal-streams/tide-predictions">LINZ</a> predictions for the Auckland standard port (Waitematā), not a Whau gauge, so times are shifted by the offset above. Rain: <a href="https://open-meteo.com/">Open-Meteo</a> model rainfall for the club (past and forecast). Weather: <a href="https://open-meteo.com/">Open-Meteo</a> forecast model. Dawn and dusk are civil twilight, calculated here.</p>
+    <p><b>Sources.</b> Tides: <a href="https://www.linz.govt.nz/products-services/tides-and-tidal-streams/tide-predictions">LINZ</a> predictions for the Auckland standard port (Waitematā), not a Whau gauge, so times are shifted by the offset above. Weather, cloud and UV: <a href="https://open-meteo.com/">Open-Meteo</a> forecast model. Dawn and dusk are civil twilight; the moon's phase and position are calculated here (low-precision almanac, good to a few minutes).</p>
     <p>A planning aid, not a safety call. Check the river yourself and follow the club's safety rules.</p>
   </footer>
 </div>
@@ -237,9 +229,11 @@ const CFG = {
   downstreamBearing: 20,                        // heading from the club towards the harbour, degrees true
   wind: { warn: 22, bad: 33 },                  // sustained km/h
   gust: { warn: 37, bad: 46 },                  // gust km/h
-  // Stream from rain in the 6 h before. Calibrated against a year of the Whau gauge
-  // (Blockhouse Bay Rd): >= 6 mm meant flow in its top 5% ~70% of the time, >= 15 mm its top 1% ~40%.
-  stream: { up: 6, high: 15 },
+  sessionHours: 2,                              // weather and light look this far ahead of the chosen time
+  weather: { rainWarn: 1, rainBad: 8, uvWarn: 8 }, // mm over the session; UV index (8+ is "very high")
+  // Night light: moon brightness = illuminated fraction × how high it is × how clear the sky is.
+  // At or above `moonlit` it's "Moonlit" (amber); below, "Dark" (red). Lights are needed either way.
+  night: { moonlit: 0.35, cloudBlock: 0.85 },   // cloudBlock: share of moonlight a fully overcast sky removes
 };
 const TZ = "Pacific/Auckland";
 const MIN = 60e3, H = 3600e3, DAY = 24 * H;
@@ -320,6 +314,46 @@ function sunDay(ms) {
   };
 }
 
+// ---- Moon (phase, illumination, altitude): low-precision almanac, as in SunCalc ---------------
+const RAD = Math.PI / 180, OBL = RAD * 23.4397;
+const jDays = ms => ms / DAY - 0.5 + 2440588 - 2451545;
+const raOf = (l, b) => Math.atan2(Math.sin(l) * Math.cos(OBL) - Math.tan(b) * Math.sin(OBL), Math.cos(l));
+const decOf = (l, b) => Math.asin(Math.sin(b) * Math.cos(OBL) + Math.cos(b) * Math.sin(OBL) * Math.sin(l));
+function sunCoords(d) {
+  const M = RAD * (357.5291 + 0.98560028 * d);
+  const L = M + RAD * (1.9148 * Math.sin(M) + 0.02 * Math.sin(2 * M) + 0.0003 * Math.sin(3 * M)) + RAD * 102.9372 + Math.PI;
+  return { ra: raOf(L, 0), dec: decOf(L, 0) };
+}
+function moonCoords(d) {
+  const L = RAD * (218.316 + 13.176396 * d), M = RAD * (134.963 + 13.064993 * d), F = RAD * (93.272 + 13.229350 * d);
+  const l = L + RAD * 6.289 * Math.sin(M), b = RAD * 5.128 * Math.sin(F);
+  return { ra: raOf(l, b), dec: decOf(l, b), dist: 385001 - 20905 * Math.cos(M) };
+}
+function moonAt(ms) {
+  const d = jDays(ms), s = sunCoords(d), m = moonCoords(d), phi = RAD * CFG.lat;
+  const Ha = RAD * (280.16 + 360.9856235 * d) + RAD * CFG.lon - m.ra;
+  const alt = Math.asin(Math.sin(phi) * Math.sin(m.dec) + Math.cos(phi) * Math.cos(m.dec) * Math.cos(Ha)) / RAD;
+  const el = Math.acos(Math.sin(s.dec) * Math.sin(m.dec) + Math.cos(s.dec) * Math.cos(m.dec) * Math.cos(s.ra - m.ra));
+  const inc = Math.atan2(149598000 * Math.sin(el), m.dist - 149598000 * Math.cos(el));
+  const ang = Math.atan2(Math.cos(s.dec) * Math.sin(s.ra - m.ra), Math.sin(s.dec) * Math.cos(m.dec) - Math.cos(s.dec) * Math.sin(m.dec) * Math.cos(s.ra - m.ra));
+  const frac = (1 + Math.cos(inc)) / 2, phase = 0.5 + 0.5 * inc * (ang < 0 ? -1 : 1) / Math.PI;
+  return { alt, frac, phase };
+}
+function moonName(phase) {
+  const names = ["New moon", "Waxing crescent", "First quarter", "Waxing gibbous", "Full moon", "Waning gibbous", "Last quarter", "Waning crescent"];
+  return names[Math.round(phase * 8) % 8];
+}
+// Next moonrise or moonset after ms (15-minute steps, up to 14 h ahead).
+function moonCross(ms, rising) {
+  let prev = moonAt(ms).alt;
+  for (let t = ms + 15 * MIN; t <= ms + 14 * H; t += 15 * MIN) {
+    const a = moonAt(t).alt;
+    if (rising ? prev <= 0 && a > 0 : prev > 0 && a <= 0) return t;
+    prev = a;
+  }
+  return null;
+}
+
 // ---- Tide ---------------------------------------------------------------------------------
 let EV = [];
 function buildEvents() { EV = (DATA.tides || []).map(([t, h, k]) => ({ t: t * 1000 + settings.offset * MIN, h, k })); }
@@ -357,7 +391,7 @@ async function loadWeather() {
   const q = new URLSearchParams({
     latitude: CFG.lat, longitude: CFG.lon, timezone: TZ, timeformat: "unixtime", wind_speed_unit: "kmh",
     past_days: 8, forecast_days: 16,
-    hourly: "temperature_2m,apparent_temperature,precipitation,precipitation_probability,weather_code,wind_speed_10m,wind_gusts_10m,wind_direction_10m",
+    hourly: "temperature_2m,apparent_temperature,precipitation,precipitation_probability,weather_code,cloud_cover,uv_index,wind_speed_10m,wind_gusts_10m,wind_direction_10m",
   });
   try {
     const r = await fetch("https://api.open-meteo.com/v1/forecast?" + q);
@@ -365,7 +399,7 @@ async function loadWeather() {
     const j = await r.json();
     const hr = j.hourly;
     WX = { t: hr.time.map(s => s * 1000), temp: hr.temperature_2m, app: hr.apparent_temperature, rain: hr.precipitation,
-      pop: hr.precipitation_probability, code: hr.weather_code, ws: hr.wind_speed_10m, wg: hr.wind_gusts_10m, wd: hr.wind_direction_10m,
+      pop: hr.precipitation_probability, code: hr.weather_code, cloud: hr.cloud_cover, uv: hr.uv_index, ws: hr.wind_speed_10m, wg: hr.wind_gusts_10m, wd: hr.wind_direction_10m,
       fetched: Date.now() };
     wxErr = null;
   } catch (e) { wxErr = e.message || String(e); }
@@ -417,17 +451,32 @@ function windRelative(from) {
 }
 const arrow = from => `<svg viewBox="-12 -12 24 24" aria-hidden="true"><path class="arrow" transform="rotate(${(from + 180) % 360})" d="M0 -10 L6 6 L0 2 L-6 6 Z"/></svg>`;
 
-// ---- Stream (from rain) -------------------------------------------------------------------
-function streamFromRain(r6) {
-  if (r6 == null) return { cls: "na", label: "Unknown" };
-  if (r6 >= CFG.stream.high) return { cls: "bad", label: "High" };
-  if (r6 >= CFG.stream.up) return { cls: "warn", label: "Up" };
-  return { cls: "good", label: "Normal" };
+// ---- Weather and light over the session ------------------------------------------------------
+// Hourly indices whose values cover the session window (ms, ms + sessionHours].
+function sessionIdx(ms) {
+  if (!WX) return [];
+  const out = [];
+  for (let k = 0; k < WX.t.length; k++) if (WX.t[k] > ms - 30 * MIN && WX.t[k] <= ms + CFG.sessionHours * H && WX.ws[k] != null) out.push(k);
+  return out;
 }
-function lastRain(ms, min = 0.5) {
-  if (!WX) return null;
-  for (let k = WX.t.length - 1; k >= 0; k--) if (WX.t[k] <= ms + 30 * MIN && (WX.rain[k] || 0) >= min) return WX.t[k];
-  return null;
+const maxOf = (ks, arr) => ks.reduce((m, k) => arr && arr[k] != null && arr[k] > m ? arr[k] : m, -Infinity);
+function uvLabel(uv) { return uv < 3 ? "low" : uv < 6 ? "moderate" : uv < 8 ? "high" : uv < 11 ? "very high" : "extreme"; }
+function weatherCall(ms) {
+  const ks = sessionIdx(ms);
+  if (!ks.length) return null;
+  const rain = rainBetween(ms, ms + CFG.sessionHours * H) ?? 0;
+  const pop = maxOf(ks, WX.pop), uv = maxOf(ks, WX.uv), code = maxOf(ks, WX.code);
+  const storm = code >= 95, c = CFG.weather;
+  const cls = storm || rain >= c.rainBad ? "bad" : rain >= c.rainWarn || uv >= c.uvWarn ? "warn" : "good";
+  return { cls, rain, pop: isFinite(pop) ? pop : null, uv: isFinite(uv) ? uv : null, code, storm, k: ks[0] };
+}
+// What a moonless/cloudy pre-dawn or evening looks like.
+function nightLight(ms) {
+  const m = moonAt(ms), i = wxIdx(ms), cloud = i >= 0 && WX.cloud ? WX.cloud[i] : null;
+  const height = m.alt <= 0 ? 0 : Math.min(1, m.alt / 20);         // low moon gives little light
+  const sky = cloud == null ? 1 : 1 - CFG.night.cloudBlock * cloud / 100;
+  const level = m.frac * height * sky;
+  return { m, cloud, level, moonlit: level >= CFG.night.moonlit };
 }
 
 // ---- Selection state -----------------------------------------------------------------------
@@ -516,33 +565,6 @@ function tideChart(ms) {
   if (v) g += `<line class="now" x1="${sx(ms)}" x2="${sx(ms)}" y1="${T - 6}" y2="${Hh - B}"/><circle cx="${sx(ms)}" cy="${sy(v.h)}" r="5.5" fill="var(--buoy)" stroke="var(--surface)" stroke-width="2"/>`;
   return `<svg viewBox="0 0 ${W} ${Hh}" role="img" aria-label="Tide height from 6 hours before to 18 hours after the chosen time">${g}</svg>`;
 }
-const wdFmt = new Intl.DateTimeFormat("en-NZ", { timeZone: TZ, weekday: "short" });
-function rainChart(ms) {
-  if (!WX) return "";
-  const W = chartW("rainChart"), narrow = W < 520;
-  const Hh = 170, L = 40, R = 10, T = 14, B = 26, now = Date.now();
-  const x0 = Math.max(WX.t[0] - H, ms - 4 * DAY), x1 = Math.min(WX.t[WX.t.length - 1], ms + DAY);
-  if (x1 <= x0) return "";
-  const sx = t => L + (t - x0) / (x1 - x0) * (W - L - R);
-  const bars = [];
-  for (let k = 0; k < WX.t.length; k++) if (WX.t[k] > x0 && WX.t[k] <= x1 && WX.rain[k] != null) bars.push([WX.t[k], WX.rain[k]]);
-  const vmax = Math.max(4, ...bars.map(b => b[1])) * 1.1;
-  const sy = v => T + (1 - v / vmax) * (Hh - T - B);
-  let g = nightBands(x0, x1, sx, T, Hh - T - B);
-  // the 6 h that decide the stream call
-  const a = Math.max(x0, ms - 6 * H), b = Math.min(x1, ms);
-  if (b > a) g += `<rect x="${sx(a)}" y="${T}" width="${sx(b) - sx(a)}" height="${Hh - T - B}" fill="var(--band)"/>`;
-  const step = vmax > 20 ? 10 : vmax > 8 ? 4 : 2;
-  for (let v = 0; v <= vmax; v += step) g += `<line class="grid" x1="${L}" x2="${W - R}" y1="${sy(v)}" y2="${sy(v)}"/><text x="${L - 6}" y="${sy(v) + 4}" text-anchor="end">${v}</text>`;
-  for (let t = Math.ceil(x0 / H) * H; t <= x1; t += H) { const p = parts(t); if (p.h === 0) g += `<text x="${sx(t)}" y="${Hh - 8}" text-anchor="middle">${esc((narrow ? wdFmt : dayFmt).format(t))}</text>`; }
-  const bw = Math.max(1, (W - L - R) / ((x1 - x0) / H) - 0.6);
-  for (const [t, v] of bars) if (v > 0) g += `<rect x="${(sx(t) - bw).toFixed(1)}" y="${sy(v).toFixed(1)}" width="${bw.toFixed(1)}" height="${(sy(0) - sy(v)).toFixed(1)}" fill="var(--accent)" opacity="${t > now ? 0.4 : 1}"/>`;
-  g += `<text x="${L + 2}" y="${T + 2}" dy="0.7em">mm per hour</text>`;
-  if (now > x0 && now < x1) g += `<line x1="${sx(now)}" x2="${sx(now)}" y1="${T}" y2="${Hh - B}" stroke="var(--muted)" stroke-dasharray="3 3"/><text x="${sx(now) + 4}" y="${T + 2}" dy="0.7em">forecast →</text>`;
-  if (ms >= x0 && ms <= x1) g += `<line class="now" x1="${sx(ms)}" x2="${sx(ms)}" y1="${T}" y2="${Hh - B}"/>`;
-  return `<svg viewBox="0 0 ${W} ${Hh}" role="img" aria-label="Hourly rain around the chosen time; the shaded 6 hours set the stream call">${g}</svg>`;
-}
-
 // ---- Render ---------------------------------------------------------------------------------
 const stat = (k, v, s = "", cls = "") => `<div class="stat ${cls}"><span class="k">${k}</span><span class="v">${v}</span>${s ? `<span class="s">${s}</span>` : ""}</div>`;
 const chip = (k, v, s, cls) => `<div class="chip ${cls}"><span class="k">${k}</span><span class="v">${v}</span><span class="s">${s}</span></div>`;
@@ -553,7 +575,7 @@ function update() {
   renderQuick();
   $("pick").value = toLocalInput(ms);
   $("selLabel").textContent = isNow ? `Now · ${fmtT(ms)}` : `${dayLabel(ms).replace(/^./, c => c.toUpperCase())} · ${fmtT(ms)}`;
-  const chips = [], said = [];
+  const chips = [], said = [], say = (k, txt) => said.push([k, txt]);
 
   // Tide
   const tt = tideAt(ms);
@@ -577,48 +599,27 @@ function update() {
       : `Stay below the S-bend · OK above from ${fmtT(sb.from)}${dayLabel(sb.from) === dayLabel(ms) ? "" : ` ${dayLabel(sb.from)}`}`;
     const cls = sb ? (sb.open ? "good" : "warn") : "na";
     chips.push(chip("Tide", `${tt.h.toFixed(1)} m ${tt.rising ? "↑" : "↓"}`, `${dir}; ${next.k === "H" ? "high" : "low"} at ${fmtT(next.t)}${sbTxt ? `<br><b>${sbTxt}</b>` : ""}`, cls));
-    said.push(`<b>${dir}</b>, ${next.k === "H" ? "high" : "low"} at ${fmtT(next.t)} (${next.h.toFixed(1)} m)${sb ? (sb.open ? `, <b>above the S-bend OK</b> until ${fmtT(sb.until)}` : `, <b>stay below the S-bend</b> until ${fmtT(sb.from)}`) : ""}`);
-  }
-
-  // Stream (from rain)
-  const r6 = rainBetween(ms - 6 * H, ms), r24 = rainBetween(ms - 24 * H, ms), r7 = rainBetween(ms - 7 * DAY, ms);
-  const future = ms > nowMs + 45 * MIN, fc = streamFromRain(r6);
-  if (!WX) {
-    $("rainStats").innerHTML = `<div class="msg">${wxErr ? `Rain data unavailable (${esc(wxErr)}).` : "Loading rain…"}</div>`;
-    $("rainText").innerHTML = ""; $("rainChart").innerHTML = ""; $("rainNote").textContent = "";
-    chips.push(chip("Stream", "—", wxErr ? "No rain data" : "Loading…", "na"));
-  } else {
-    const lr = lastRain(ms);
-    const lrTxt = lr == null ? "None in the past week" : ms - lr < H ? (future ? "Forecast that hour" : "Raining now") : `${fmtDur(ms - lr)} before`;
-    $("rainStats").innerHTML =
-      stat(`Rain, 6 h before${future ? " (forecast)" : ""}`, r6 == null ? "—" : `${r6.toFixed(1)} mm`, `<span class="tag ${fc.cls}">Stream ${fc.label.toLowerCase()}</span>`) +
-      stat("Rain, 24 h", r24 == null ? "—" : `${r24.toFixed(0)} mm`, "") +
-      stat("Rain, 7 days", r7 == null ? "—" : `${r7.toFixed(0)} mm`, "") +
-      stat("Last rain", lr == null ? "—" : ms - lr < H ? (future ? fmtT(ms) : "Now") : fmtT(lr), lrTxt);
-    $("rainText").innerHTML = fc.cls === "bad" ? "Heavy rain in the last few hours: expect the stream to be running hard, with a stronger ebb, weaker flood and debris in the upper river."
-      : fc.cls === "warn" ? "Enough recent rain for the stream to be up: a stronger ebb in the upper river and some debris."
-      : "";
-    $("rainChart").innerHTML = rainChart(ms);
-    $("rainNote").textContent = `Modelled rain at the club · shaded: the 6 h that count`;
-    const lab = future && fc.cls !== "na" ? `Likely ${fc.label.toLowerCase()}` : fc.label;
-    chips.push(chip("Stream", lab, `${r6 == null ? "?" : r6.toFixed(1)} mm rain in the 6 h before${r24 != null && r24 >= 1 ? ` · ${r24.toFixed(0)} mm in 24 h` : ""}`, fc.cls));
-    said.push(`stream <b>${lab.toLowerCase()}</b>`);
+    say("Tide", `<b>${dir}</b>, ${next.k === "H" ? "high" : "low"} at ${fmtT(next.t)} (${next.h.toFixed(1)} m)${sb ? (sb.open ? `, <b>above the S-bend OK</b> until ${fmtT(sb.until)}` : `, <b>stay below the S-bend</b> until ${fmtT(sb.from)}`) : ""}`);
   }
 
   // Weather
   const i = wxIdx(ms);
+  const noWx = WX || wxErr ? "No forecast" : "Loading…";
   if (i < 0) {
     $("wxStats").innerHTML = `<div class="msg">${wxErr ? `Forecast unavailable (${esc(wxErr)}).` : WX ? "No forecast this far ahead (16 days max)." : "Loading forecast…"}</div>`;
     $("wxStrip").innerHTML = ""; $("wxNote").textContent = "";
-    chips.push(chip("Wind", "—", WX || wxErr ? "No forecast" : "Loading…", "na"));
-    chips.push(chip("Harbour", "—", WX || wxErr ? "No forecast" : "Loading…", "na"));
+    for (const k of ["Wind", "Weather", "Harbour"]) chips.push(chip(k, "—", noWx, "na"));
   } else {
     const ws = WX.ws[i], wg = WX.wg[i], wd = WX.wd[i], wc = windClass(ws, wg);
+    const wx = weatherCall(ms), hrs = CFG.sessionHours;
+    const uvNow = WX.uv && WX.uv[i] != null ? WX.uv[i] : null;
     $("wxStats").innerHTML =
       stat("Wind", `${compass(wd)} ${Math.round(ws)} km/h`, `gusts ${Math.round(wg)} km/h`, "") +
       stat("On the river", "", windRelative(wd)) +
       stat("Weather", esc(WMO[WX.code[i]] || "—"), `${Math.round(WX.temp[i])}°C, feels ${Math.round(WX.app[i])}°C`) +
-      stat("Rain", `${(WX.rain[i] || 0).toFixed(1)} mm`, WX.pop[i] != null && WX.t[i] > nowMs ? `${WX.pop[i]}% chance that hour` : "in the hour");
+      stat("Rain", `${(WX.rain[i] || 0).toFixed(1)} mm`, WX.pop[i] != null && WX.t[i] > nowMs ? `${WX.pop[i]}% chance that hour` : "in the hour") +
+      stat("Cloud", WX.cloud && WX.cloud[i] != null ? `${Math.round(WX.cloud[i])}%` : "—", "of the sky") +
+      stat("UV index", uvNow == null ? "—" : uvNow.toFixed(0), uvNow == null ? "" : uvLabel(uvNow) + (wx && wx.uv != null && wx.uv > uvNow + 0.5 ? ` · up to ${wx.uv.toFixed(0)} in the next ${hrs} h` : ""));
     let strip = "";
     for (let k = i - 2; k <= i + 7; k++) {
       if (k < 0 || k >= WX.t.length || WX.ws[k] == null) continue;
@@ -630,7 +631,19 @@ function update() {
     $("wxStrip").innerHTML = strip;
     $("wxNote").textContent = `km/h · arrows show where the wind blows to · updated ${fmtT(WX.fetched)}`;
     chips.push(chip("Wind", `${compass(wd)} ${Math.round(ws)}–${Math.round(wg)} km/h`, windRelative(wd).split(",")[0], wc));
-    said.push(`<b>${compass(wd)} ${Math.round(ws)} km/h</b> gusting ${Math.round(wg)}`);
+    say("Wind", `<b>${compass(wd)} ${Math.round(ws)} km/h</b> gusting ${Math.round(wg)}`);
+
+    // Weather over the session: rain/sun and UV
+    if (wx) {
+      const name = WMO[wx.code] || "—";
+      const rainTxt = wx.rain >= 0.1 ? `${wx.rain.toFixed(1)} mm rain` : "Dry";
+      const popTxt = wx.pop != null && WX.t[wx.k] > nowMs && wx.pop >= 10 ? ` (${wx.pop}% chance)` : "";
+      const uvTxt = wx.uv == null || wx.uv < 1 ? "" : wx.uv >= CFG.weather.uvWarn ? ` · <b>UV ${wx.uv.toFixed(0)} ${uvLabel(wx.uv)}</b>` : ` · UV ${wx.uv.toFixed(0)} ${uvLabel(wx.uv)}`;
+      chips.push(chip("Weather", `${esc(name)} ${Math.round(WX.temp[i])}°`, `${rainTxt}${popTxt} in the next ${hrs} h${uvTxt}`, wx.cls));
+      if (wx.storm) say("Weather", "<b>thunderstorms</b> forecast");
+      else if (wx.rain >= CFG.weather.rainWarn) say("Weather", `<b>${wx.rain.toFixed(0)} mm rain</b> in the next ${hrs} h`);
+      if (wx.uv != null && wx.uv >= CFG.weather.uvWarn) say("Weather", `<b>UV ${wx.uv.toFixed(0)}</b>, so sun protection`);
+    } else chips.push(chip("Weather", "—", "No forecast", "na"));
 
     // Whau: wind against tide
     const wt = windVsTide(wd, ws, tt, CFG.downstreamBearing);
@@ -642,28 +655,44 @@ function update() {
         : wt.with ? `Wind running with the ${wt.stream}`
         : `Wind across the ${wt.stream}`;
       chips.push(chip("Wind v tide (Whau)", v, sub, wt.against ? (ws >= CFG.wind.warn ? "bad" : "warn") : "good"));
-      if (wt.against) said.push(`<b>wind against tide</b> on the Whau`);
+      if (wt.against) say("Wind v tide (Whau)", `<b>wind against tide</b> on the Whau`);
     }
 
     // Harbour
     const hb = harbourRating(ws, wg, wd, tt);
     chips.push(chip("Harbour", hb.label, `${compass(wd)} ${Math.round(ws)}, gusts ${Math.round(wg)} km/h · ${hb.why}${hb.wt && hb.wt.against ? ` · against the ${hb.wt.stream}` : ""}`, hb.cls));
-    said.push(`harbour <b>${hb.label.toLowerCase()}</b>`);
+    say("Harbour", `harbour <b>${hb.label.toLowerCase()}</b>`);
   }
 
-  // Light
+  // Light, including how dark the night is (moon and cloud) before first light or after last light
   const sun = sunDay(ms);
   if (sun.dawn && sun.dusk) {
     const light = ms >= sun.dawn && ms <= sun.dusk, day = ms >= sun.rise && ms <= sun.set;
-    chips.push(chip("Light", day ? "Daylight" : light ? "Twilight" : "Dark",
-      `First light ${fmtT(sun.dawn)} · sunrise ${fmtT(sun.rise)} · sunset ${fmtT(sun.set)} · last light ${fmtT(sun.dusk)}`, day ? "good" : light ? "warn" : "bad"));
-    if (!light) said.push("<b>dark</b>, so you'll need lights");
+    const morning = ms < (sun.rise + sun.set) / 2;
+    const times = morning ? `First light ${fmtT(sun.dawn)} · sunrise ${fmtT(sun.rise)}` : `Sunset ${fmtT(sun.set)} · last light ${fmtT(sun.dusk)}`;
+    const i0 = wxIdx(ms), cloud = i0 >= 0 && WX.cloud ? WX.cloud[i0] : null;
+    if (day) {
+      chips.push(chip("Light", "Daylight", times, "good"));
+    } else if (light) {
+      const dull = cloud != null && cloud >= 80;
+      chips.push(chip("Light", dull ? "Twilight, overcast" : "Twilight", `${times}${cloud != null ? ` · ${Math.round(cloud)}% cloud` : ""}`, "warn"));
+      say("Light", dull ? "<b>dim twilight</b> under cloud" : "<b>twilight</b>");
+    } else {
+      const n = nightLight(ms), m = n.m;
+      const up = m.alt > 0, cross = moonCross(ms, !up);
+      const moonTxt = `${moonName(m.phase)} ${Math.round(m.frac * 100)}%, ${up ? `up${cross ? ` until ${fmtT(cross)}` : ""}` : `down${cross ? ` until ${fmtT(cross)}` : ""}`}`;
+      const cloudTxt = n.cloud == null ? "" : ` · ${Math.round(n.cloud)}% cloud`;
+      const lightBy = morning ? ` · first light ${fmtT(sun.dawn)}` : "";
+      chips.push(chip("Light", n.moonlit ? "Dark, moonlit" : "Dark", `${moonTxt}${cloudTxt}${lightBy}`, n.moonlit ? "warn" : "bad"));
+      say("Light", n.moonlit ? "<b>dark but moonlit</b>, so you'll need lights" : "<b>dark</b>, so you'll need lights");
+    }
   }
 
-  const ORDER = ["Tide", "Stream", "Wind v tide (Whau)", "Wind", "Harbour", "Light"];
+  const ORDER = ["Tide", "Wind", "Weather", "Light", "Wind v tide (Whau)", "Harbour"];
   const key = c => ORDER.indexOf((/<span class="k">(.*?)<\/span>/.exec(c) || [])[1]);
   $("verdict").innerHTML = chips.sort((a, b) => key(a) - key(b)).join("");
-  $("summary").innerHTML = said.length ? said.join(" · ") + "." : "";
+  said.sort((a, b) => ORDER.indexOf(a[0]) - ORDER.indexOf(b[0]));
+  $("summary").innerHTML = said.length ? said.map(s => s[1]).join(" · ") + "." : "";
 }
 
 // ---- Settings ---------------------------------------------------------------------------------
