@@ -1,1 +1,7 @@
 // Placeholder to allow overriding predefined variables smoothly.
+
+// Darker grey and link blue so small text meets WCAG AA (4.5:1) on the
+// #fdfdfd page and #fafafa card backgrounds.
+$brand-color:        #6a6a6a;
+$link-base-color:    #1a5fc4;
+$link-visited-color: darken($link-base-color, 15%);
