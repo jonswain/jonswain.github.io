@@ -347,3 +347,23 @@
         padding: 0 0.8rem;
     }
 }
+
+// External "Consulting" link in the header nav, matching the "Blog ↗" link on cambridgecheminformatics.com
+.page-link-ext::after {
+  content: "↗";
+  font-size: 0.8em;
+  margin-left: 3px;
+  opacity: 0.6;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
